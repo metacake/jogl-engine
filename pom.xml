@@ -1,0 +1,122 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+  http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- The Basics -->
+    <groupId>metacake</groupId>
+    <artifactId>examples</artifactId>
+    <version>a0.1</version>
+    <packaging>jar</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.8.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>metacake</groupId>
+            <artifactId>metacake</artifactId>
+            <version>a0.1</version>
+        </dependency>
+        <!--
+        <dependency>
+            <groupId>net.java.dev.jogl</groupId>
+            <artifactId>jogl</artifactId>
+            <version>1.1.1-rc6</version>
+        </dependency>
+        -->
+        <dependency>
+            <groupId>org.jogamp.gluegen</groupId>
+            <artifactId>gluegen-rt-main</artifactId>
+            <version>2.0-rc11</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jogamp.jogl</groupId>
+            <artifactId>jogl-all-main</artifactId>
+            <version>2.0-rc11</version>
+        </dependency>
+    </dependencies>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
+    </properties>
+
+    <!-- Build Settings -->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.13</version>
+                <configuration>
+                    <argLine>-XX:-UseSplitVerifier</argLine>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven.surefire</groupId>
+                        <artifactId>surefire-junit4</artifactId>
+                        <version>2.13</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>emma-maven-plugin</artifactId>
+                <version>1.0</version>
+                <inherited>true</inherited>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>surefire-report-maven-plugin</artifactId>
+                <inherited>true</inherited>
+            </plugin>
+        </plugins>
+    </reporting>
+
+    <!-- More Project Information -->
+    <name>Cake Game Jogl Prototype engine</name>
+    <description></description>
+    <url></url>
+    <inceptionYear>2013</inceptionYear>
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>manual</distribution>
+        </license>
+    </licenses>
+    <organization></organization>
+    <developers></developers>
+
+
+
+    <repositories>
+        <repository>
+            <id>metacake.io</id>
+            <url>http://metacake.io:8081/artifactory/ext-release-local</url>
+        </repository>
+    </repositories>
+
+    <!-- Environment Settings -->
+    <!--
+           Will do this some day
+      <issueManagement>...</issueManagement>
+      <ciManagement>...</ciManagement>
+      <mailingLists>...</mailingLists>
+      <scm>...</scm>
+      <prerequisites>...</prerequisites>
+      <repositories>...</repositories>
+      <pluginRepositories>...</pluginRepositories>
+      <distributionManagement>...</distributionManagement>
+      <profiles>...</profiles>
+    -->
+</project>
