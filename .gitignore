@@ -1,0 +1,16 @@
+# java specific
+.class
+
+#IDE specific 
+*.iml
+.classpath
+.project
+.settings/
+.idea/
+*.iws
+log/
+target/
+
+
+# generic files to ignore
+.DS_Store
