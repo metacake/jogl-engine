@@ -25,7 +25,7 @@ public class KeyTrigger implements ActionTrigger<Integer> {
 
     @Override
     public InputDeviceName bindingDevice() {
-        return Keyboard.NAME;
+        return KeyboardDevice.NAME;
     }
 
     public void keyPressed(KeyEvent e) {

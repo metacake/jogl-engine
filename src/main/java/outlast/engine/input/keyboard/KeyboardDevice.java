@@ -11,7 +11,7 @@ import outlast.engine.window.JOGLWindow;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Keyboard implements InputDevice, KeyListener {
+public class KeyboardDevice implements InputDevice, KeyListener {
     public static final InputDeviceName NAME = new InputDeviceName();
     private List<KeyTrigger> triggers = new ArrayList<>();
 
