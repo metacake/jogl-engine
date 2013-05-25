@@ -1,4 +1,4 @@
-package outlast.engine.input;
+package outlast.engine.input.keyboard;
 
 import com.jogamp.newt.event.KeyEvent;
 import io.metacake.core.input.ActionTrigger;
