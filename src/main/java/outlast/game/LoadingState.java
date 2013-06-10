@@ -58,40 +58,7 @@ public class LoadingState extends UserState {
         Path vPath = Paths.get("engine", "src", "main", "resources", "vertex.glsl");
         Path fPath = Paths.get("engine", "src", "main", "resources", "fragment.glsl");
         bundle.add(JOGLDevice.NAME, new CreateShaderInstruction(shaderAsset, vPath, fPath));
-        bundle.add(JOGLDevice.NAME, new SetupVBO(vbo, vao));
+        bundle.add(JOGLDevice.NAME, new SetupVBO(vbo, vao, vertices));
         return bundle;
-    }
-}
-
-class SetupVBO extends JOGLInstruction<GL3> {
-
-    Asset<Integer> vboAsset;
-    Asset<Integer> vaoAsset;
-
-    SetupVBO(Asset<Integer> vbo, Asset<Integer> vao) {
-        this.vboAsset = vbo;
-        this.vaoAsset = vao;
-    }
-
-    @Override
-    public void render(GL3 gl) {
-        // VBO
-        IntBuffer vboHandleBuffer = Buffers.newDirectIntBuffer(1);
-        gl.glGenBuffers(1, vboHandleBuffer);
-        int vbo = vboHandleBuffer.get();
-
-        FloatBuffer buffer = Buffers.newDirectFloatBuffer(LoadingState.vertices);
-        gl.glBindBuffer(GL3.GL_ARRAY_BUFFER, vbo);
-        gl.glBufferData(GL3.GL_ARRAY_BUFFER, buffer.capacity() * Buffers.SIZEOF_FLOAT, buffer, GL3bc.GL_STATIC_DRAW);
-        gl.glBindBuffer(GL3.GL_ARRAY_BUFFER, vbo);
-
-        setRawAsset(vboAsset, vbo);
-
-        // VAO
-        IntBuffer vaoHandle = Buffers.newDirectIntBuffer(1);
-        gl.glGenVertexArrays(1, vaoHandle);
-        int vao = vaoHandle.get();
-        gl.glBindVertexArray(vao);
-        setRawAsset(vaoAsset, vao);
     }
 }
