@@ -7,12 +7,11 @@ import com.jogamp.newt.opengl.GLWindow;
 import com.jogamp.opengl.util.AnimatorBase;
 import com.jogamp.opengl.util.FPSAnimator;
 import io.metacake.core.common.window.CakeWindow;
-import io.metacake.core.common.window.CloseObserver;
 
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
 
-public class JOGLWindow implements CakeWindow<GLWindow> {
+public class JOGLWindow extends CakeWindow<GLWindow> {
     private GLWindow window;
     private AnimatorBase animator;
 
@@ -24,7 +23,7 @@ public class JOGLWindow implements CakeWindow<GLWindow> {
     };
 
     public JOGLWindow(int width, int height) {
-        GLCapabilities capabilities = new GLCapabilities(GLProfile.getDefault());
+        GLCapabilities capabilities = new GLCapabilities(GLProfile.get(GLProfile.GL3bc));
         window = GLWindow.create(capabilities);
         window.setSize(width, height);
         window.setVisible(true);
@@ -34,7 +33,7 @@ public class JOGLWindow implements CakeWindow<GLWindow> {
     }
 
     @Override
-    public void close() {
+    public void dispose() {
         window.setVisible(false);
         animator.stop();
         window.destroy();
@@ -59,9 +58,6 @@ public class JOGLWindow implements CakeWindow<GLWindow> {
     public int getHeight() {
         return window.getHeight();
     }
-
-    @Override
-    public void addCloseObserver(CloseObserver closeObserver) {}
 
     @Override
     public GLWindow getRawWindow() {

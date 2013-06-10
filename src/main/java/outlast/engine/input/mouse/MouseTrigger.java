@@ -39,6 +39,12 @@ public class MouseTrigger implements ActionTrigger<Integer> {
         }
     }
 
+    public void mouseDragged(MouseEvent e) {
+        for (MouseRecognizer recognizer : recognizers) {
+            recognizer.mouseMotion(e);
+        }
+    }
+
     // EFFECT: adds r to this
     // returns this
     public MouseTrigger bindRecognizer(MouseRecognizer r) {

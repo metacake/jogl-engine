@@ -13,6 +13,11 @@ public class JOGLDevice implements OutputDevice {
     private SyncState sync = new SyncState();
 
     @Override
+    public OutputDeviceName name() {
+        return NAME;
+    }
+
+    @Override
     public void render(List<RenderingInstruction> instructions) {
         sync.setState(instructions);
     }

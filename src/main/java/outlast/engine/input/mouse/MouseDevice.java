@@ -56,6 +56,11 @@ public class MouseDevice extends MouseAdapter implements InputDevice {
     }
 
     @Override
+    public InputDeviceName name() {
+        return NAME;
+    }
+
+    @Override
     public void mouseMoved(MouseEvent mouseEvent) {
         for (MouseTrigger trigger : triggers) {
             if (trigger.getCodes().contains(MouseEvent.EVENT_MOUSE_MOVED)) {

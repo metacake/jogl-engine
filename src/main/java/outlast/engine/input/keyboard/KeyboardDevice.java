@@ -16,6 +16,11 @@ public class KeyboardDevice implements InputDevice, KeyListener {
     private List<KeyTrigger> triggers = new ArrayList<>();
 
     @Override
+    public InputDeviceName name() {
+        return NAME;
+    }
+
+    @Override
     public void shutdown() {}
 
     @Override
