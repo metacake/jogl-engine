@@ -8,7 +8,7 @@ import outlast.engine.output.JOGLDevice;
 import outlast.engine.output.JOGLInstruction;
 import outlast.engine.output.asset.Shader;
 
-import javax.media.opengl.GL3bc;
+import javax.media.opengl.GL3;
 
 public class MainState extends UserState {
     private Asset<Shader> shader;
@@ -31,16 +31,16 @@ public class MainState extends UserState {
         return bundle;
     }
 
-    class TestInstruction extends JOGLInstruction<GL3bc> {
+    class TestInstruction extends JOGLInstruction<GL3> {
 
         @Override
-        public void render(GL3bc gl) {
+        public void render(GL3 gl) {
             gl.glUseProgram(shader.getValue().getHandle());
 
-            gl.glBindBuffer(GL3bc.GL_ARRAY_BUFFER, vboAsset.getValue());
+            gl.glBindBuffer(GL3.GL_ARRAY_BUFFER, vboAsset.getValue());
             gl.glEnableVertexAttribArray(0);
-            gl.glVertexAttribPointer(0, 4, GL3bc.GL_FLOAT, false, 0, 0);
-            gl.glDrawArrays(GL3bc.GL_TRIANGLES, 0, 3);
+            gl.glVertexAttribPointer(0, 4, GL3.GL_FLOAT, false, 0, 0);
+            gl.glDrawArrays(GL3.GL_TRIANGLES, 0, 3);
 
             gl.glDisableVertexAttribArray(0);
 
@@ -48,4 +48,3 @@ public class MainState extends UserState {
         }
     }
 }
-

@@ -23,7 +23,7 @@ public class JOGLWindow extends CakeWindow<GLWindow> {
     };
 
     public JOGLWindow(int width, int height) {
-        GLCapabilities capabilities = new GLCapabilities(GLProfile.get(GLProfile.GL3bc));
+        GLCapabilities capabilities = new GLCapabilities(GLProfile.get(GLProfile.GL3));
         window = GLWindow.create(capabilities);
         window.setSize(width, height);
         window.setVisible(true);

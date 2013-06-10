@@ -5,7 +5,6 @@ import outlast.engine.output.Asset;
 import outlast.engine.output.JOGLInstruction;
 
 import javax.media.opengl.GL3;
-import javax.media.opengl.GL3bc;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
@@ -13,7 +12,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class CreateShaderInstruction extends JOGLInstruction<GL3bc> {
+public class CreateShaderInstruction extends JOGLInstruction<GL3> {
     private String vertexSource, fragmentSource;
     private Asset<Shader> shaderAsset;
 
@@ -28,7 +27,7 @@ public class CreateShaderInstruction extends JOGLInstruction<GL3bc> {
     }
 
     @Override
-    public void render(GL3bc gl) {
+    public void render(GL3 gl) {
         int handle = gl.glCreateProgram();
         int vertexHandle = compile(gl, vertexSource, GL3.GL_VERTEX_SHADER);
         int fragmentHandle = compile(gl, fragmentSource, GL3.GL_FRAGMENT_SHADER);
@@ -46,7 +45,6 @@ public class CreateShaderInstruction extends JOGLInstruction<GL3bc> {
         gl.glDeleteShader(fragmentHandle);
 
         setRawAsset(shaderAsset, new Shader(handle));
-        System.out.println("handle: " + handle);
     }
 
     private String getText(Path filePath) throws IOException {
