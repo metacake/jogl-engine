@@ -6,15 +6,15 @@ import io.metacake.core.process.state.UserState;
 import outlast.engine.output.Asset;
 import outlast.engine.output.JOGLDevice;
 import outlast.engine.output.JOGLInstruction;
-import outlast.engine.output.asset.Shader;
+import outlast.engine.output.asset.shader.ShaderProgram;
 
 import javax.media.opengl.GL3;
 
 public class MainState extends UserState {
-    private Asset<Shader> shader;
+    private Asset<ShaderProgram> shader;
     private Asset<Integer> vboAsset;
 
-    public MainState(Asset<Shader> shader, Asset<Integer> vboAsset) {
+    public MainState(Asset<ShaderProgram> shader, Asset<Integer> vboAsset) {
         this.shader = shader;
         this.vboAsset = vboAsset;
     }
@@ -35,7 +35,7 @@ public class MainState extends UserState {
 
         @Override
         public void render(GL3 gl) {
-            gl.glUseProgram(shader.getValue().getHandle());
+            shader.getValue().useProgram(gl);
 
             gl.glBindBuffer(GL3.GL_ARRAY_BUFFER, vboAsset.getValue());
             gl.glEnableVertexAttribArray(0);
@@ -44,7 +44,7 @@ public class MainState extends UserState {
 
             gl.glDisableVertexAttribArray(0);
 
-            gl.glUseProgram(0);
+            shader.getValue().disuseProgram(gl);
         }
     }
 }

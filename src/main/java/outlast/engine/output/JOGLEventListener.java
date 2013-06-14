@@ -20,7 +20,7 @@ public class JOGLEventListener implements GLEventListener {
 
     @Override
     public void display(GLAutoDrawable drawable) {
-        GL4bc gl = drawable.getGL().getGL4bc();
+        GL3 gl = drawable.getGL().getGL3();
         for(RenderingInstruction instruction : state.getState()) {
             ((JOGLInstruction<GL3>) instruction).render(gl);
         }
