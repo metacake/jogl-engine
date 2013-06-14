@@ -8,7 +8,7 @@ import io.metacake.core.process.state.UserState;
 import outlast.engine.output.Asset;
 import outlast.engine.output.JOGLDevice;
 import outlast.engine.output.asset.shader.CreateShaderInstruction;
-import outlast.engine.output.asset.shader.ShaderProgram;
+import outlast.engine.output.shader.ShaderProgram;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

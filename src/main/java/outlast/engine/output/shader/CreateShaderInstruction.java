@@ -1,4 +1,4 @@
-package outlast.engine.output.asset.shader;
+package outlast.engine.output.shader;
 
 import outlast.engine.output.Asset;
 import outlast.engine.output.JOGLInstruction;

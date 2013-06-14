@@ -6,7 +6,7 @@ import io.metacake.core.process.state.UserState;
 import outlast.engine.output.Asset;
 import outlast.engine.output.JOGLDevice;
 import outlast.engine.output.JOGLInstruction;
-import outlast.engine.output.asset.shader.ShaderProgram;
+import outlast.engine.output.shader.ShaderProgram;
 
 import javax.media.opengl.GL3;
 

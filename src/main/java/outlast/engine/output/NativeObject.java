@@ -1,4 +1,4 @@
-package outlast.engine.output.asset.shader;
+package outlast.engine.output;
 
 public class NativeObject {
     private int handle;

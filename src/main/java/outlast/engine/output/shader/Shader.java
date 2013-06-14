@@ -1,6 +1,7 @@
-package outlast.engine.output.asset.shader;
+package outlast.engine.output.shader;
 
 import com.jogamp.common.nio.Buffers;
+import outlast.engine.output.NativeObject;
 
 import javax.media.opengl.GL3;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package outlast.engine.output.asset.shader;
+package outlast.engine.output.shader;
 
 import javax.media.opengl.GL3;
 import java.nio.file.Path;
