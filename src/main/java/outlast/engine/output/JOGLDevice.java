@@ -5,6 +5,7 @@ import io.metacake.core.common.window.CakeWindow;
 import io.metacake.core.output.OutputDeviceName;
 import io.metacake.core.output.RenderingInstruction;
 import io.metacake.core.output.system.OutputDevice;
+import outlast.engine.window.JOGLWindow;
 
 import java.util.List;
 
@@ -29,9 +30,8 @@ public class JOGLDevice implements OutputDevice {
     public void shutdown() {}
 
     @Override
-    @SuppressWarnings("unchecked")
     public void bind(CakeWindow cakeWindow) {
-        GLWindow glWindow = ((CakeWindow<GLWindow>) cakeWindow).getRawWindow();
+        GLWindow glWindow = ((JOGLWindow) cakeWindow).getRawWindow();
         glWindow.addGLEventListener(new JOGLEventListener(sync));
     }
 }
