@@ -4,11 +4,10 @@ import com.jogamp.common.nio.Buffers;
 import outlast.engine.output.Asset;
 import outlast.engine.output.JOGLInstruction;
 import outlast.engine.output.buffer.BufferObject;
+import outlast.engine.output.buffer.GenerateBufferInstruction;
 import outlast.engine.output.buffer.VertexAttributeObject;
 
 import javax.media.opengl.GL3;
-import javax.media.opengl.GL3bc;
-import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 public class SetupVBO extends JOGLInstruction<GL3> {
@@ -20,21 +19,14 @@ public class SetupVBO extends JOGLInstruction<GL3> {
     SetupVBO(Asset<BufferObject> vbo, Asset<VertexAttributeObject> vao, float[] vertices) {
         this.vboAsset = vbo;
         this.vaoAsset = vao;
-        this.vertices = vertices;       }
+        this.vertices = vertices;
+    }
 
     @Override
     public void render(GL3 gl) {
-        // VBO
-        IntBuffer vboHandleBuffer = Buffers.newDirectIntBuffer(1);
-        gl.glGenBuffers(1, vboHandleBuffer);
-        int vbo = vboHandleBuffer.get();
-
-        FloatBuffer buffer = Buffers.newDirectFloatBuffer(vertices);
-        gl.glBindBuffer(GL3.GL_ARRAY_BUFFER, vbo);
-        gl.glBufferData(GL3.GL_ARRAY_BUFFER, buffer.capacity() * Buffers.SIZEOF_FLOAT, buffer, GL3bc.GL_STATIC_DRAW);
-        gl.glBindBuffer(GL3.GL_ARRAY_BUFFER, vbo);
-
-        vboAsset.getValue().setHandle(vbo);
+        GenerateBufferInstruction bufferInstruction = GenerateBufferInstruction.generateBuffer(vboAsset);
+        bufferInstruction.withFloatData(vertices).withRenderingHint(GL3.GL_STATIC_DRAW).withStride(4);
+        bufferInstruction.render(gl);
 
         // VAO
         IntBuffer vaoHandle = Buffers.newDirectIntBuffer(1);

@@ -8,6 +8,7 @@ import io.metacake.core.process.state.UserState;
 import outlast.engine.output.Asset;
 import outlast.engine.output.JOGLDevice;
 import outlast.engine.output.buffer.BufferObject;
+import outlast.engine.output.buffer.VertexAttribute;
 import outlast.engine.output.buffer.VertexAttributeObject;
 import outlast.engine.output.shader.CreateShaderInstruction;
 import outlast.engine.output.shader.ShaderProgram;
@@ -32,14 +33,14 @@ public class LoadingState extends UserState {
     Asset<BufferObject> vbo = new Asset<>(new BufferObject(GL3.GL_ARRAY_BUFFER));
     Asset<VertexAttributeObject> vao;
     public LoadingState() {
-        List<VertexAttributeObject.VertexAttribute> attrs = new ArrayList<>();
-        attrs.add(new VertexAttributeObject.VertexAttribute(0, 4, 0));
+        List<VertexAttribute> attrs = new ArrayList<>();
+        attrs.add(new VertexAttribute(0, 4, 0));
         vao = new Asset<>(new VertexAttributeObject(attrs));
     }
 
     @Override
     public GameState tick() {
-        if(time > 3000) {
+        if(time > 1000) {
             return TransitionState.transitionWithTriggers(new MainState(shaderAsset, vbo, vao));
         } else {
             time += Bootstrapper.DEFAULT_LOOP_MILLIS;
