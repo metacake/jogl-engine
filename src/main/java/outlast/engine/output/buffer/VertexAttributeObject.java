@@ -4,6 +4,7 @@ import com.jogamp.common.nio.Buffers;
 import outlast.engine.output.NativeObject;
 
 import javax.media.opengl.GL3;
+import java.nio.IntBuffer;
 import java.util.List;
 
 public class VertexAttributeObject extends NativeObject {
@@ -40,6 +41,16 @@ public class VertexAttributeObject extends NativeObject {
     }
 
     public void unbind(GL3 gl) {
+        gl.glBindVertexArray(0);
+    }
+
+    protected void generateVAO(GL3 gl) {
+        IntBuffer vaoHandle = Buffers.newDirectIntBuffer(1);
+        gl.glGenVertexArrays(1, vaoHandle);
+        int vao = vaoHandle.get();
+
+        gl.glBindVertexArray(vao);
+        this.setHandle(vao);
         gl.glBindVertexArray(0);
     }
 }

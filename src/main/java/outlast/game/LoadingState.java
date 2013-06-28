@@ -7,9 +7,7 @@ import io.metacake.core.process.state.TransitionState;
 import io.metacake.core.process.state.UserState;
 import outlast.engine.output.Asset;
 import outlast.engine.output.JOGLDevice;
-import outlast.engine.output.buffer.BufferObject;
-import outlast.engine.output.buffer.VertexAttribute;
-import outlast.engine.output.buffer.VertexAttributeObject;
+import outlast.engine.output.buffer.*;
 import outlast.engine.output.shader.CreateShaderInstruction;
 import outlast.engine.output.shader.ShaderProgram;
 
@@ -64,7 +62,10 @@ public class LoadingState extends UserState {
         Path fPath = Paths.get("engine", "src", "main", "resources", "fragment.glsl");
         CreateShaderInstruction inst = ShaderProgram.create(shaderAsset).addVertexShader(vPath).addFragmentShader(fPath);
         bundle.add(JOGLDevice.NAME, inst);
-        bundle.add(JOGLDevice.NAME, new SetupVBO(vbo, vao, vertices));
+        GenerateBufferInstruction vboInstruction = GenerateBufferInstruction.generateBuffer(vbo);
+        vboInstruction.withFloatData(vertices).withRenderingHint(GL3.GL_STATIC_DRAW).withStride(4);
+        bundle.add(JOGLDevice.NAME, vboInstruction);
+        bundle.add(JOGLDevice.NAME, GenerateVAOInstruction.create(vao));
         return bundle;
     }
 }
