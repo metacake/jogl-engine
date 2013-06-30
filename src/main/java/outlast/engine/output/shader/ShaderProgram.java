@@ -18,8 +18,8 @@ public class ShaderProgram extends NativeObject {
         return new CreateShaderInstruction(asset);
     }
 
-    private Map<String, Integer> uniforms = new HashMap<>();
-    private Map<String, Integer> attributes = new HashMap<>();
+    public Map<String, Integer> uniforms;
+    public Map<String, Integer> attributes;
 
     public void useProgram(GL3 gl) {
         gl.glUseProgram(getHandle());
@@ -51,7 +51,8 @@ public class ShaderProgram extends NativeObject {
                 gl.glDetachShader(handle, shader.getHandle());
             }
             this.setHandle(handle);
-            getUniforms(gl);
+            uniforms = getUniforms(gl);
+            attributes = getAttrbutes(gl);
         }
     }
 
@@ -84,7 +85,8 @@ public class ShaderProgram extends NativeObject {
         return status.get() == GL3.GL_TRUE;
     }
 
-    private void getUniforms(GL3 gl) {
+    private Map<String, Integer> getUniforms(GL3 gl) {
+        Map<String, Integer> uniforms = new HashMap<>();
         int handle = getHandle();
         IntBuffer countBuffer = IntBuffer.allocate(1);
         gl.glGetProgramiv(handle, GL3.GL_ACTIVE_UNIFORMS, countBuffer);
@@ -98,5 +100,25 @@ public class ShaderProgram extends NativeObject {
             String name = new String(bytearr).trim();
             uniforms.put(name, gl.glGetUniformLocation(handle, name));
         }
+        return uniforms;
+    }
+
+    private Map<String, Integer> getAttrbutes(GL3 gl) {
+        Map<String, Integer> uniforms = new HashMap<>();
+        int handle = getHandle();
+        IntBuffer countBuffer = IntBuffer.allocate(1);
+        gl.glGetProgramiv(handle, GL3.GL_ACTIVE_ATTRIBUTES, countBuffer);
+        int limit = countBuffer.get();
+        for(int i = 0; i < limit; i++) {
+            IntBuffer length = IntBuffer.allocate(1);
+            IntBuffer size = IntBuffer.allocate(1);
+            ByteBuffer buffer = ByteBuffer.allocate(100);
+            gl.glGetActiveAttrib(handle, i, 100, length, IntBuffer.allocate(1), IntBuffer.allocate(1), buffer);
+            byte[] bytearr = new byte[buffer.remaining()];
+            buffer.get(bytearr);
+            String name = new String(bytearr).trim();
+            uniforms.put(name, gl.glGetAttribLocation(handle, name));
+        }
+        return uniforms;
     }
 }

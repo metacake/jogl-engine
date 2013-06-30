@@ -32,6 +32,7 @@ public class LoadingState extends UserState {
     Asset<VertexAttributeObject> vao;
     public LoadingState() {
         List<VertexAttribute> attrs = new ArrayList<>();
+        // TODO: I don't actually know that the attribute is at zero. But I made an informed guess based on my knowledge of GLSL and got it right.
         attrs.add(new VertexAttribute(0, 4, 0));
         vao = new Asset<>(new VertexAttributeObject(attrs));
     }
@@ -39,6 +40,7 @@ public class LoadingState extends UserState {
     @Override
     public GameState tick() {
         if(time > 1000) {
+           System.out.println(shaderAsset.getValue().attributes);
             return TransitionState.transitionWithTriggers(new MainState(shaderAsset, vbo, vao));
         } else {
             time += Bootstrapper.DEFAULT_LOOP_MILLIS;
