@@ -6,19 +6,21 @@ import outlast.engine.output.JOGLInstruction;
 
 import javax.media.opengl.GL3;
 import java.nio.Buffer;
+import java.nio.IntBuffer;
 
 public class GenerateBufferInstruction extends JOGLInstruction<GL3> {
 
-    public static GenerateBufferInstruction generateBuffer(Asset<BufferObject> bufferObject) {
-        return new GenerateBufferInstruction(bufferObject);
+    public static GenerateBufferInstruction generateBuffer(int target) {
+        return new GenerateBufferInstruction(target);
     }
 
-    private Asset<BufferObject> bufferObject;
-    private int stride, hint;
+    private BufferObject bufferObject;
+    private int target, stride, hint;
     private Buffer data;
 
-    private GenerateBufferInstruction(Asset<BufferObject> bufferObject) {
-        this.bufferObject = bufferObject;
+    private GenerateBufferInstruction(int target) {
+        this.target = target;
+        this.bufferObject = new BufferObject(target);
     }
 
     public GenerateBufferInstruction withFloatData(float[] data) {
@@ -36,8 +38,26 @@ public class GenerateBufferInstruction extends JOGLInstruction<GL3> {
         return this;
     }
 
+    public Asset<BufferObject> getAsset() {
+        return new Asset<>(bufferObject);
+    }
+
     @Override
     public void render(GL3 gl) {
-        bufferObject.getValue().generateBuffer(gl, data, stride, hint);
+        generateBuffer(gl);
+    }
+
+    protected void generateBuffer(GL3 gl) {
+        int handle = generateBufferHandle(gl);
+        gl.glBindBuffer(target, handle);
+        gl.glBufferData(target, data.capacity() * stride, data, hint);
+        gl.glBindBuffer(target, 0);
+        bufferObject.setHandle(handle);
+    }
+
+    protected int generateBufferHandle(GL3 gl) {
+        IntBuffer handleBuffer = Buffers.newDirectIntBuffer(1);
+        gl.glGenBuffers(1, handleBuffer);
+        return handleBuffer.get();
     }
 }
