@@ -43,7 +43,6 @@ public class LoadingState extends UserState {
     @Override
     public GameState tick() {
         if(time > 1000) {
-           System.out.println(shaderAsset.getValue().attributes);
             return TransitionState.transitionWithTriggers(new MainState(shaderAsset, vbo, vao));
         } else {
             time += Bootstrapper.DEFAULT_LOOP_MILLIS;
@@ -65,7 +64,7 @@ public class LoadingState extends UserState {
         RenderingInstructionBundle bundle = new RenderingInstructionBundle();
         Path vPath = Paths.get("engine", "src", "main", "resources", "vertex.glsl");
         Path fPath = Paths.get("engine", "src", "main", "resources", "fragment.glsl");
-        CreateShaderInstruction inst = ShaderProgram.create(shaderAsset).addVertexShader(vPath).addFragmentShader(fPath);
+        CreateShaderInstruction inst = ShaderProgram.create(shaderAsset).withVertexShader(vPath).withFragmentShader(fPath);
         bundle.add(JOGLDevice.NAME, inst);
         GenerateBufferInstruction vboInstruction = GenerateBufferInstruction.generateBuffer(vbo);
         vboInstruction.withFloatData(vertices).withRenderingHint(GL3.GL_STATIC_DRAW).withStride(4);

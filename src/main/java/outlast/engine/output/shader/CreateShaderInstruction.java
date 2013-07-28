@@ -26,12 +26,12 @@ public class CreateShaderInstruction extends JOGLInstruction<GL3> {
         return this;
     }
 
-    public CreateShaderInstruction addVertexShader(Path path) {
+    public CreateShaderInstruction withVertexShader(Path path) {
         this.shaders.add(new VertexShader(path));
         return this;
     }
 
-    public CreateShaderInstruction addFragmentShader(Path path) {
+    public CreateShaderInstruction withFragmentShader(Path path) {
         this.shaders.add(new FragmentShader(path));
         return this;
     }

@@ -1,6 +1,6 @@
 package outlast.engine.output;
 
-public class NativeObject {
+public abstract class NativeObject {
     private int handle;
 
     public NativeObject() {
@@ -14,4 +14,11 @@ public class NativeObject {
     public void setHandle(int handle) {
         this.handle = handle;
     }
+
+    public boolean isBound() {
+        return handle >= 0;
+    }
+
+    // TODO: This will change to be abstract soon
+    public void dispose() {}
 }

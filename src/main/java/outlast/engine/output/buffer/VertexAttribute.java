@@ -14,6 +14,14 @@ public class VertexAttribute {
         this.type = GL3.GL_FLOAT;
     }
 
+    public VertexAttribute(int layout, int count, int offset, int type, boolean normalized) {
+        this.layout = layout;
+        this.count = count;
+        this.offset = offset;
+        this.type = type;
+        this.normalized = normalized;
+    }
+
     /**
      * Enable this attribute.
      * @param gl The GL context
