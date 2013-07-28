@@ -17,6 +17,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * NOTE: The best way to do this is actually to load in phases. Making a State that load phases in order would be best.
+ */
 public class LoadingState extends UserState {
 
     public static final float[] vertices = {
