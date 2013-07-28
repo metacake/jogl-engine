@@ -22,39 +22,45 @@ public class Loading extends PhaseLoadingState {
             -0.75f, -0.75f, 0.0f, 1.0f,
     };
 
-    static Asset<ShaderProgram> shaderAsset = new Asset<>(new ShaderProgram());
-    static Asset<BufferObject> vbo = new Asset<>(new BufferObject(GL3.GL_ARRAY_BUFFER));
-    static Asset<VertexAttributeObject> vao;
-
-    static LoadingPhase phase0 = new LoadingPhase() {
-        @Override
-        public RenderingInstructionBundle getRenderBundle() {
-            RenderingInstructionBundle bundle = new RenderingInstructionBundle();
-            Path vPath = Paths.get("engine", "src", "main", "resources", "vertex.glsl");
-            Path fPath = Paths.get("engine", "src", "main", "resources", "fragment.glsl");
-            CreateShaderInstruction inst = ShaderProgram.create(shaderAsset).withVertexShader(vPath).withFragmentShader(fPath);
-            bundle.add(JOGLDevice.NAME, inst);
-            return bundle;
-        }
-    };
-
-    static LoadingPhase phase1 = new LoadingPhase() {
-        @Override
-        public RenderingInstructionBundle getRenderBundle() {
-            List<VertexAttribute> attrs = new ArrayList<>();
-            attrs.add(new VertexAttribute(shaderAsset.getValue().getAttributeLocation("position"), 4, 0));
-            vao = new Asset<>(new VertexAttributeObject(attrs));
-            RenderingInstructionBundle bundle = new RenderingInstructionBundle();
-            GenerateBufferInstruction vboInstruction = GenerateBufferInstruction.generateBuffer(vbo);
-            vboInstruction.withFloatData(vertices).withRenderingHint(GL3.GL_STATIC_DRAW).withStride(4);
-            bundle.add(JOGLDevice.NAME, vboInstruction);
-            bundle.add(JOGLDevice.NAME, GenerateVAOInstruction.create(vao));
-            return bundle;
-        }
-    };
+    Asset<ShaderProgram> shaderAsset = new Asset<>(new ShaderProgram());
+    Asset<BufferObject> vbo = new Asset<>(new BufferObject(GL3.GL_ARRAY_BUFFER));
+    Asset<VertexAttributeObject> vao;
 
     public Loading() {
-        super(phase0, phase1);
+        super();
+        this.addPhase(phase0());
+        this.addPhase(phase1());
+    }
+
+    private LoadingPhase phase0() {
+        return new LoadingPhase() {
+            @Override
+            public RenderingInstructionBundle getRenderBundle() {
+                RenderingInstructionBundle bundle = new RenderingInstructionBundle();
+                Path vPath = Paths.get("engine", "src", "main", "resources", "vertex.glsl");
+                Path fPath = Paths.get("engine", "src", "main", "resources", "fragment.glsl");
+                CreateShaderInstruction inst = ShaderProgram.create(shaderAsset).withVertexShader(vPath).withFragmentShader(fPath);
+                bundle.add(JOGLDevice.NAME, inst);
+                return bundle;
+            }
+        };
+    }
+
+    private LoadingPhase phase1() {
+        return new LoadingPhase() {
+            @Override
+            public RenderingInstructionBundle getRenderBundle() {
+                List<VertexAttribute> attrs = new ArrayList<>();
+                attrs.add(new VertexAttribute(shaderAsset.getValue().getAttributeLocation("position"), 4, 0));
+                vao = new Asset<>(new VertexAttributeObject(attrs));
+                RenderingInstructionBundle bundle = new RenderingInstructionBundle();
+                GenerateBufferInstruction vboInstruction = GenerateBufferInstruction.generateBuffer(vbo);
+                vboInstruction.withFloatData(vertices).withRenderingHint(GL3.GL_STATIC_DRAW).withStride(4);
+                bundle.add(JOGLDevice.NAME, vboInstruction);
+                bundle.add(JOGLDevice.NAME, GenerateVAOInstruction.create(vao));
+                return bundle;
+            }
+        };
     }
 
     @Override

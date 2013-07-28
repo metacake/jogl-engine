@@ -11,7 +11,6 @@ import java.util.Queue;
 public abstract class PhaseLoadingState extends UserState {
 
     private Queue<LoadingPhase> phases;
-    private GameState nextState;
 
     public PhaseLoadingState(Queue<LoadingPhase> phases) {
         this.phases = phases;
@@ -21,16 +20,15 @@ public abstract class PhaseLoadingState extends UserState {
         this(new LinkedList<>(Arrays.asList(phases)));
     }
 
+    public void addPhase(LoadingPhase phase) {
+        this.phases.add(phase);
+    }
+
     @Override
     public final GameState tick() {
         if (phases.isEmpty()) {
             return nextState();
         } else {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             return this;
         }
     }
