@@ -1,4 +1,4 @@
-package outlast.game;
+package outlast.engine.state;
 
 import io.metacake.core.output.RenderingInstructionBundle;
 import io.metacake.core.process.state.GameState;

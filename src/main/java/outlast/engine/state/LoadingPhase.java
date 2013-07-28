@@ -1,9 +1,9 @@
-package outlast.game;
+package outlast.engine.state;
 
 import io.metacake.core.output.RenderingInstructionBundle;
 
 /**
- * A SAM for Loading Renderables in order.
+ * A SAM for LoadingState Renderables in order.
  */
 public interface LoadingPhase {
 
