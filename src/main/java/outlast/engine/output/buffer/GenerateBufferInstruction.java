@@ -15,7 +15,7 @@ public class GenerateBufferInstruction extends JOGLInstruction<GL3> {
     }
 
     private BufferObject bufferObject;
-    private int target, stride, hint;
+    private int target, type, hint;
     private Buffer data;
 
     private GenerateBufferInstruction(int target) {
@@ -25,16 +25,12 @@ public class GenerateBufferInstruction extends JOGLInstruction<GL3> {
 
     public GenerateBufferInstruction withFloatData(float[] data) {
         this.data = Buffers.newDirectFloatBuffer(data).asReadOnlyBuffer();
+        this.type = Buffers.SIZEOF_FLOAT;
         return this;
     }
 
     public GenerateBufferInstruction withRenderingHint(int hint) {
         this.hint = hint;
-        return this;
-    }
-
-    public GenerateBufferInstruction withStride(int stride) {
-        this.stride = stride;
         return this;
     }
 
@@ -50,7 +46,7 @@ public class GenerateBufferInstruction extends JOGLInstruction<GL3> {
     protected void generateBuffer(GL3 gl) {
         int handle = generateBufferHandle(gl);
         gl.glBindBuffer(target, handle);
-        gl.glBufferData(target, data.capacity() * stride, data, hint);
+        gl.glBufferData(target, data.capacity() * type, data, hint);
         gl.glBindBuffer(target, 0);
         bufferObject.setHandle(handle);
     }

@@ -1,5 +1,6 @@
 package outlast.game;
 
+import com.jogamp.common.nio.Buffers;
 import io.metacake.core.output.RenderingInstructionBundle;
 import io.metacake.core.process.state.GameState;
 import io.metacake.core.process.state.TransitionState;
@@ -53,7 +54,7 @@ public class LoadingState extends PhaseLoadingState {
                 RenderingInstructionBundle bundle = new RenderingInstructionBundle();
 
                 GenerateBufferInstruction vboInstruction = GenerateBufferInstruction.generateBuffer(GL3.GL_ARRAY_BUFFER);
-                vboInstruction.withFloatData(vertices).withRenderingHint(GL3.GL_STATIC_DRAW).withStride(4);
+                vboInstruction.withFloatData(vertices).withRenderingHint(GL3.GL_STATIC_DRAW);
                 vbo = vboInstruction.getAsset();
                 bundle.add(JOGLDevice.NAME, vboInstruction);
 
