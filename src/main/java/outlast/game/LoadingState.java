@@ -52,17 +52,17 @@ public class LoadingState extends PhaseLoadingState {
         return new LoadingPhase() {
             @Override
             public RenderingInstructionBundle getRenderBundle() {
-                List<VertexAttribute> attrs = new ArrayList<>();
-                attrs.add(new VertexAttribute(shaderAsset.getValue().getAttributeLocation("position"), 4, 0));
-                vao = new Asset<>(new VertexAttributeObject(attrs));
                 RenderingInstructionBundle bundle = new RenderingInstructionBundle();
 
                 GenerateBufferInstruction vboInstruction = GenerateBufferInstruction.generateBuffer(GL3.GL_ARRAY_BUFFER);
                 vboInstruction.withFloatData(vertices).withRenderingHint(GL3.GL_STATIC_DRAW).withStride(4);
                 vbo = vboInstruction.getAsset();
-
                 bundle.add(JOGLDevice.NAME, vboInstruction);
-                bundle.add(JOGLDevice.NAME, GenerateVAOInstruction.create(vao));
+
+                GenerateVAOInstruction vaoInstruction = GenerateVAOInstruction.create();
+                vaoInstruction.withVertexAttribute(new VertexAttribute(shaderAsset.getValue().getAttributeLocation("position"), 4, 0));
+                vao = vaoInstruction.getAsset();
+                bundle.add(JOGLDevice.NAME, vaoInstruction);
                 return bundle;
             }
         };
