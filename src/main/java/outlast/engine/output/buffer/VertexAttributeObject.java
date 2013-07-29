@@ -4,7 +4,6 @@ import com.jogamp.common.nio.Buffers;
 import outlast.engine.output.NativeObject;
 
 import javax.media.opengl.GL3;
-import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 

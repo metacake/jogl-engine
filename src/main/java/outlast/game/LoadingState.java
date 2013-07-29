@@ -14,8 +14,6 @@ import outlast.engine.state.PhaseLoadingState;
 import javax.media.opengl.GL3;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 
 public class LoadingState extends PhaseLoadingState {
     public static final float[] vertices = {

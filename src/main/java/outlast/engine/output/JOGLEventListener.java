@@ -2,7 +2,9 @@ package outlast.engine.output;
 
 import io.metacake.core.output.RenderingInstruction;
 
-import javax.media.opengl.*;
+import javax.media.opengl.GL3;
+import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.GLEventListener;
 import java.util.Collections;
 
 public class JOGLEventListener implements GLEventListener {
