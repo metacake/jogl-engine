@@ -18,7 +18,7 @@ public class GenerateBufferInstruction extends JOGLInstruction<GL3> {
     private int target, type, hint;
     private Buffer data;
 
-    private GenerateBufferInstruction(int target) {
+    protected GenerateBufferInstruction(int target) {
         this.target = target;
         this.bufferObject = new BufferObject(target);
     }
@@ -26,6 +26,12 @@ public class GenerateBufferInstruction extends JOGLInstruction<GL3> {
     public GenerateBufferInstruction withFloatData(float[] data) {
         this.data = Buffers.newDirectFloatBuffer(data).asReadOnlyBuffer();
         this.type = Buffers.SIZEOF_FLOAT;
+        return this;
+    }
+
+    public GenerateBufferInstruction withShortData(short[] data) {
+        this.data = Buffers.newDirectShortBuffer(data).asReadOnlyBuffer();
+        this.type = Buffers.SIZEOF_SHORT;
         return this;
     }
 

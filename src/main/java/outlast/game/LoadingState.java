@@ -1,6 +1,5 @@
 package outlast.game;
 
-import com.jogamp.common.nio.Buffers;
 import io.metacake.core.output.RenderingInstructionBundle;
 import io.metacake.core.process.state.GameState;
 import io.metacake.core.process.state.TransitionState;
@@ -20,17 +19,21 @@ public class LoadingState extends PhaseLoadingState {
     public static final float[] vertices = {
             0.75f, 0.75f, 0.0f, 1.0f,
             0.75f, -0.75f, 0.0f, 1.0f,
-            -0.75f, -0.75f, 0.0f, 1.0f,
+            -0.75f, -0.75f, 0.0f, 1.0f
     };
+
+    public static final short[] indices = { 1,2,3 };
 
     Asset<ShaderProgram> shaderAsset = new Asset<>(new ShaderProgram());
     Asset<BufferObject> vbo;
     Asset<VertexAttributeObject> vao;
+    Asset<Mesh> mesh;
 
     public LoadingState() {
         super();
         this.addPhase(phase0());
         this.addPhase(phase1());
+        this.addPhase(phase2());
     }
 
     private LoadingPhase phase0() {
@@ -67,8 +70,23 @@ public class LoadingState extends PhaseLoadingState {
         };
     }
 
+    private LoadingPhase phase2() {
+        return new LoadingPhase() {
+            @Override
+            public RenderingInstructionBundle getRenderBundle() {
+                RenderingInstructionBundle bundle = new RenderingInstructionBundle();
+                MeshBuilder builder = new MeshBuilder();
+                builder.withVertexAttribute(new VertexAttribute(shaderAsset.getValue().getAttributeLocation("position"), 4, 0));
+                builder.withVertices(vertices).withIndices(indices);
+                mesh = builder.getAsset();
+                bundle.add(JOGLDevice.NAME, builder);
+                return bundle;
+            }
+        };
+    }
+
     @Override
     protected GameState nextState() {
-        return TransitionState.transitionWithTriggers(new MainState(shaderAsset, vbo, vao));
+        return TransitionState.transitionWithTriggers(new MainState(shaderAsset, mesh));
     }
 }
