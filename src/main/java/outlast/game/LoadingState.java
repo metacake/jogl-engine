@@ -33,7 +33,6 @@ public class LoadingState extends PhaseLoadingState {
         super();
         this.addPhase(phase0());
         this.addPhase(phase1());
-        this.addPhase(phase2());
     }
 
     private LoadingPhase phase0() {
@@ -51,26 +50,6 @@ public class LoadingState extends PhaseLoadingState {
     }
 
     private LoadingPhase phase1() {
-        return new LoadingPhase() {
-            @Override
-            public RenderingInstructionBundle getRenderBundle() {
-                RenderingInstructionBundle bundle = new RenderingInstructionBundle();
-
-                GenerateBufferInstruction vboInstruction = GenerateBufferInstruction.generateBuffer(GL3.GL_ARRAY_BUFFER);
-                vboInstruction.withFloatData(vertices).withRenderingHint(GL3.GL_STATIC_DRAW);
-                vbo = vboInstruction.getAsset();
-                bundle.add(JOGLDevice.NAME, vboInstruction);
-
-                GenerateVAOInstruction vaoInstruction = GenerateVAOInstruction.create();
-                vaoInstruction.withVertexAttribute(new VertexAttribute(shaderAsset.getValue().getAttributeLocation("position"), 4, 0));
-                vao = vaoInstruction.getAsset();
-                bundle.add(JOGLDevice.NAME, vaoInstruction);
-                return bundle;
-            }
-        };
-    }
-
-    private LoadingPhase phase2() {
         return new LoadingPhase() {
             @Override
             public RenderingInstructionBundle getRenderBundle() {
