@@ -22,7 +22,7 @@ public class LoadingState extends PhaseLoadingState {
             -0.75f, -0.75f, 0.0f, 1.0f
     };
 
-    public static final short[] indices = { 1,2,3 };
+    public static final short[] indices = { 0, 1, 2 };
 
     Asset<ShaderProgram> shaderAsset = new Asset<>(new ShaderProgram());
     Asset<BufferObject> vbo;
