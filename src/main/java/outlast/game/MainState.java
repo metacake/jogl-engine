@@ -10,10 +10,12 @@ import outlast.engine.output.shader.ShaderProgram;
 public class MainState extends UserState {
     private Asset<ShaderProgram> shader;
     private Asset<MeshContext> meshContextAsset;
+    private Asset<Mesh> meshAsset;
 
-    public MainState(Asset<ShaderProgram> shader, Asset<MeshContext> meshContextAsset) {
+    public MainState(Asset<ShaderProgram> shader, Asset<MeshContext> meshContextAsset, Asset<Mesh> meshAsset) {
         this.shader = shader;
         this.meshContextAsset = meshContextAsset;
+        this.meshAsset = meshAsset;
     }
 
     @Override
@@ -24,7 +26,7 @@ public class MainState extends UserState {
     @Override
     public RenderingInstructionBundle renderingInstructions() {
         RenderingInstructionBundle bundle = new RenderingInstructionBundle();
-        bundle.add(JOGLDevice.NAME, new RenderMesh(meshContextAsset.getValue(), shader.getValue()));
+        bundle.add(JOGLDevice.NAME, new RenderMesh(meshContextAsset.getValue(), meshAsset.getValue(), shader.getValue()));
         return bundle;
     }
 }

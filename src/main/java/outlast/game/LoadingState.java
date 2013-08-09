@@ -25,6 +25,7 @@ public class LoadingState extends PhaseLoadingState {
 
     Asset<ShaderProgram> shaderAsset = new Asset<>(new ShaderProgram());
     Asset<MeshContext> meshContextAsset;
+    Asset<Mesh> meshAsset;
 
     public LoadingState() {
         super();
@@ -52,7 +53,7 @@ public class LoadingState extends PhaseLoadingState {
             public RenderingInstructionBundle getRenderBundle() {
                 RenderingInstructionBundle bundle = new RenderingInstructionBundle();
                 MeshBuilder builder = MeshBuilder.create(new VertexAttribute(shaderAsset.getValue().getAttributeLocation("position"), 4, 0));
-                builder.withVertices(vertices).withIndices(indices);
+                meshAsset = builder.createMesh(vertices, indices);
                 meshContextAsset = builder.getAsset();
                 bundle.add(JOGLDevice.NAME, builder);
                 return bundle;
@@ -62,6 +63,6 @@ public class LoadingState extends PhaseLoadingState {
 
     @Override
     protected GameState nextState() {
-        return TransitionState.transitionWithTriggers(new MainState(shaderAsset, meshContextAsset));
+        return TransitionState.transitionWithTriggers(new MainState(shaderAsset, meshContextAsset, meshAsset));
     }
 }
