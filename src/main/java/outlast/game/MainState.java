@@ -5,18 +5,15 @@ import io.metacake.core.process.state.GameState;
 import io.metacake.core.process.state.UserState;
 import outlast.engine.output.Asset;
 import outlast.engine.output.JOGLDevice;
-import outlast.engine.output.JOGLInstruction;
 import outlast.engine.output.shader.ShaderProgram;
-
-import javax.media.opengl.GL3;
 
 public class MainState extends UserState {
     private Asset<ShaderProgram> shader;
-    private Asset<Mesh> mesh;
+    private Asset<MeshContext> meshContextAsset;
 
-    public MainState(Asset<ShaderProgram> shader, Asset<Mesh> mesh) {
+    public MainState(Asset<ShaderProgram> shader, Asset<MeshContext> meshContextAsset) {
         this.shader = shader;
-        this.mesh = mesh;
+        this.meshContextAsset = meshContextAsset;
     }
 
     @Override
@@ -27,7 +24,7 @@ public class MainState extends UserState {
     @Override
     public RenderingInstructionBundle renderingInstructions() {
         RenderingInstructionBundle bundle = new RenderingInstructionBundle();
-        bundle.add(JOGLDevice.NAME, new RenderMesh(mesh.getValue(), shader.getValue()));
+        bundle.add(JOGLDevice.NAME, new RenderMesh(meshContextAsset.getValue(), shader.getValue()));
         return bundle;
     }
 }

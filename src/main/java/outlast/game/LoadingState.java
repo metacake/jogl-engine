@@ -11,7 +11,6 @@ import outlast.engine.output.shader.ShaderProgram;
 import outlast.engine.state.LoadingPhase;
 import outlast.engine.state.PhaseLoadingState;
 
-import javax.media.opengl.GL3;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -25,9 +24,7 @@ public class LoadingState extends PhaseLoadingState {
     public static final short[] indices = { 0, 1, 2 };
 
     Asset<ShaderProgram> shaderAsset = new Asset<>(new ShaderProgram());
-    Asset<BufferObject> vbo;
-    Asset<VertexAttributeObject> vao;
-    Asset<Mesh> mesh;
+    Asset<MeshContext> meshContextAsset;
 
     public LoadingState() {
         super();
@@ -57,7 +54,7 @@ public class LoadingState extends PhaseLoadingState {
                 MeshBuilder builder = new MeshBuilder();
                 builder.withVertexAttribute(new VertexAttribute(shaderAsset.getValue().getAttributeLocation("position"), 4, 0));
                 builder.withVertices(vertices).withIndices(indices);
-                mesh = builder.getAsset();
+                meshContextAsset = builder.getAsset();
                 bundle.add(JOGLDevice.NAME, builder);
                 return bundle;
             }
@@ -66,6 +63,6 @@ public class LoadingState extends PhaseLoadingState {
 
     @Override
     protected GameState nextState() {
-        return TransitionState.transitionWithTriggers(new MainState(shaderAsset, mesh));
+        return TransitionState.transitionWithTriggers(new MainState(shaderAsset, meshContextAsset));
     }
 }
