@@ -9,8 +9,8 @@ import java.util.Arrays;
 
 public class MeshBuilder extends JOGLInstruction<GL3> {
 
-    private float[] vertices;
-    private short[] indices;
+    private float[] vertices = new float[0];
+    private short[] indices = new short[0];
 
     private GenerateVAOInstruction vaoInst;
     private Asset<MeshContext> meshContextAsset = new Asset<>(new MeshContext());
@@ -27,9 +27,27 @@ public class MeshBuilder extends JOGLInstruction<GL3> {
     }
 
     public Asset<Mesh> createMesh(float[] verts, short[] inds) {
-        vertices = Arrays.copyOf(verts, verts.length);
-        indices = Arrays.copyOf(inds, inds.length);
-        return new Asset<>(new Mesh(0, inds.length));
+        int originalLength = indices.length;
+        addIndices(inds);
+        addVertices(verts);
+        return new Asset<>(new Mesh(originalLength, inds.length));
+    }
+
+    private void addVertices(float[] verts) {
+        int originalLength = this.vertices.length;
+        vertices = Arrays.copyOf(vertices, originalLength + verts.length);
+        System.arraycopy(verts, 0, vertices, originalLength, verts.length);
+    }
+
+    private void addIndices(short[] inds) {
+        int originalLength = indices.length;
+        indices = Arrays.copyOf(indices, originalLength + inds.length);
+        System.arraycopy(inds, 0, indices, originalLength, inds.length);
+
+        int offset = vertices.length / vaoInst.getAsset().getValue().stride();
+        for(int i = originalLength; i < indices.length; i++) {
+            indices[i] += offset;
+        }
     }
 
     public Asset<MeshContext> getAsset() {

@@ -13,19 +13,27 @@ import outlast.engine.state.PhaseLoadingState;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LoadingState extends PhaseLoadingState {
-    public static final float[] vertices = {
+    public static final float[] LOWER_TRIANGLE = {
             0.75f, 0.75f, 0.0f, 1.0f,
             0.75f, -0.75f, 0.0f, 1.0f,
-            -0.75f, -0.75f, 0.0f, 1.0f
+            -0.75f, -0.75f, 0.0f, 1.0f,
     };
 
-    public static final short[] indices = { 0, 1, 2 };
+    public static final float[] UPPER_TRIANGLE = {
+            0.75f, 0.75f, 0.0f, 1.0f,
+            -0.75f, -0.75f, 0.0f, 1.0f,
+            -0.75f, 0.75f, 0.0f, 1.0f
+    };
+
+    public static final short[] INDICES = { 0, 1, 2 };
 
     Asset<ShaderProgram> shaderAsset = new Asset<>(new ShaderProgram());
     Asset<MeshContext> meshContextAsset;
-    Asset<Mesh> meshAsset;
+    List<Asset<Mesh>> meshAsset = new ArrayList<>();
 
     public LoadingState() {
         super();
@@ -53,7 +61,8 @@ public class LoadingState extends PhaseLoadingState {
             public RenderingInstructionBundle getRenderBundle() {
                 RenderingInstructionBundle bundle = new RenderingInstructionBundle();
                 MeshBuilder builder = MeshBuilder.create(new VertexAttribute(shaderAsset.getValue().getAttributeLocation("position"), 4, 0));
-                meshAsset = builder.createMesh(vertices, indices);
+                meshAsset.add(builder.createMesh(UPPER_TRIANGLE, INDICES));
+                meshAsset.add(builder.createMesh(LOWER_TRIANGLE, INDICES));
                 meshContextAsset = builder.getAsset();
                 bundle.add(JOGLDevice.NAME, builder);
                 return bundle;
