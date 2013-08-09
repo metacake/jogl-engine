@@ -51,8 +51,7 @@ public class LoadingState extends PhaseLoadingState {
             @Override
             public RenderingInstructionBundle getRenderBundle() {
                 RenderingInstructionBundle bundle = new RenderingInstructionBundle();
-                MeshBuilder builder = new MeshBuilder();
-                builder.withVertexAttribute(new VertexAttribute(shaderAsset.getValue().getAttributeLocation("position"), 4, 0));
+                MeshBuilder builder = MeshBuilder.create(new VertexAttribute(shaderAsset.getValue().getAttributeLocation("position"), 4, 0));
                 builder.withVertices(vertices).withIndices(indices);
                 meshContextAsset = builder.getAsset();
                 bundle.add(JOGLDevice.NAME, builder);

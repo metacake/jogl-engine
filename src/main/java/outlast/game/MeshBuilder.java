@@ -10,8 +10,19 @@ public class MeshBuilder extends JOGLInstruction<GL3> {
 
     GenerateBufferInstruction vboInst = GenerateBufferInstruction.generateBuffer(GL3.GL_ARRAY_BUFFER).withRenderingHint(GL3.GL_STATIC_DRAW);
     GenerateBufferInstruction iboInst = GenerateBufferInstruction.generateBuffer(GL3.GL_ELEMENT_ARRAY_BUFFER).withRenderingHint(GL3.GL_STATIC_DRAW);
-    GenerateVAOInstruction vaoInst = GenerateVAOInstruction.create();
+    GenerateVAOInstruction vaoInst;
     Asset<MeshContext> meshContextAsset = new Asset<>(new MeshContext());
+
+    public static MeshBuilder create(VertexAttribute... attributes) {
+        return new MeshBuilder(attributes);
+    }
+
+    private MeshBuilder(VertexAttribute... attributes) {
+        vaoInst = GenerateVAOInstruction.create();
+        for(VertexAttribute attribute : attributes) {
+            vaoInst.withVertexAttribute(attribute);
+        }
+    }
 
     public MeshBuilder withVertices(float[] verts) {
         vboInst.withFloatData(verts);
