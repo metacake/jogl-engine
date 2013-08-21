@@ -5,8 +5,11 @@ import outlast.engine.output.Asset;
 import outlast.engine.output.JOGLInstruction;
 
 import javax.media.opengl.GL3;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
@@ -27,13 +30,13 @@ public class CreateShaderInstruction extends JOGLInstruction<GL3> {
         return this;
     }
 
-    public CreateShaderInstruction withVertexShader(Path path) {
-        this.shaders.add(new VertexShader(path));
+    public CreateShaderInstruction withVertexShader(String source) {
+        this.shaders.add(new VertexShader(source));
         return this;
     }
 
-    public CreateShaderInstruction withFragmentShader(Path path) {
-        this.shaders.add(new FragmentShader(path));
+    public CreateShaderInstruction withFragmentShader(String source) {
+        this.shaders.add(new FragmentShader(source));
         return this;
     }
 
@@ -44,9 +47,9 @@ public class CreateShaderInstruction extends JOGLInstruction<GL3> {
         createProgram(gl, shaders);
     }
 
-    void createProgram(GL3 gl, List<Shader> shaders) {
+    private void createProgram(GL3 gl, List<Shader> shaders) {
         for (Shader shader : shaders) {
-            shader.compile(gl);
+            compile(gl, shader);
         }
         int handle = gl.glCreateProgram();
         for (Shader shader : shaders) {
@@ -107,7 +110,6 @@ public class CreateShaderInstruction extends JOGLInstruction<GL3> {
         int limit = countBuffer.get();
         for(int i = 0; i < limit; i++) {
             IntBuffer length = IntBuffer.allocate(1);
-            IntBuffer size = IntBuffer.allocate(1);
             ByteBuffer buffer = ByteBuffer.allocate(100);
             gl.glGetActiveAttrib(handle, i, 100, length, IntBuffer.allocate(1), IntBuffer.allocate(1), buffer);
             byte[] bytearr = new byte[buffer.remaining()];
@@ -115,5 +117,33 @@ public class CreateShaderInstruction extends JOGLInstruction<GL3> {
             String name = new String(bytearr).trim();
             shaderAsset.getValue().addAttribute(name, gl.glGetAttribLocation(handle, name));
         }
+    }
+
+    private void compile(GL3 gl, Shader shader) {
+            int handle = gl.glCreateShader(shader.getShaderType());
+            gl.glShaderSource(handle, 1, new String[] {shader.getSource()}, null, 0);
+            gl.glCompileShader(handle);
+            if(!isCompiled(gl, handle)) {
+                printCompileErrorLog(gl, handle);
+            }
+        shader.setHandle(handle);
+    }
+
+    private void printCompileErrorLog(GL3 gl, int handle) {
+        IntBuffer logLengthBuffer = Buffers.newDirectIntBuffer(1);
+        gl.glGetShaderiv(handle, GL3.GL_INFO_LOG_LENGTH, logLengthBuffer);
+        int length = logLengthBuffer.get();
+
+        ByteBuffer data = Buffers.newDirectByteBuffer(length);
+        gl.glGetShaderInfoLog(handle, length, null, data);
+        byte[] bytes = new byte[length];
+        data.get(bytes);
+        System.out.println(new String(bytes));
+    }
+
+    private boolean isCompiled(GL3 gl, int handle) {
+        IntBuffer status = Buffers.newDirectIntBuffer(1);
+        gl.glGetShaderiv(handle, GL3.GL_COMPILE_STATUS, status);
+        return status.get() == GL3.GL_TRUE;
     }
 }

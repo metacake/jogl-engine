@@ -1,15 +1,10 @@
 package outlast.engine.output.shader;
 
-import com.jogamp.common.nio.Buffers;
 import outlast.engine.output.Asset;
 import outlast.engine.output.NativeObject;
 
 import javax.media.opengl.GL3;
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ShaderProgram extends NativeObject {

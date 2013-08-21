@@ -11,6 +11,9 @@ import outlast.engine.output.shader.ShaderProgram;
 import outlast.engine.state.LoadingPhase;
 import outlast.engine.state.PhaseLoadingState;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -31,6 +34,19 @@ public class LoadingState extends PhaseLoadingState {
 
     public static final short[] INDICES = { 0, 1, 2 };
 
+
+    static String getSource(Path filePath) {
+        StringBuilder builder = new StringBuilder();
+        try {
+            for(String line : Files.readAllLines(filePath, Charset.defaultCharset())) {
+                builder.append(line).append("\n");
+            }
+            return builder.toString();
+        } catch(IOException io) {
+            throw new RuntimeException(io);
+        }
+    }
+
     Asset<ShaderProgram> shaderAsset = new Asset<>(new ShaderProgram());
     Asset<MeshContext> meshContextAsset;
     List<Asset<Mesh>> meshAsset = new ArrayList<>();
@@ -48,7 +64,8 @@ public class LoadingState extends PhaseLoadingState {
                 RenderingInstructionBundle bundle = new RenderingInstructionBundle();
                 Path vPath = Paths.get("engine", "src", "main", "resources", "vertex.glsl");
                 Path fPath = Paths.get("engine", "src", "main", "resources", "fragment.glsl");
-                CreateShaderInstruction inst = ShaderProgram.create(shaderAsset).withVertexShader(vPath).withFragmentShader(fPath);
+                CreateShaderInstruction inst = ShaderProgram.create(shaderAsset);
+                inst.withVertexShader(getSource(vPath)).withFragmentShader(getSource(fPath));
                 bundle.add(JOGLDevice.NAME, inst);
                 return bundle;
             }

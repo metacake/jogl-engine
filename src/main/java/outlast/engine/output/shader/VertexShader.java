@@ -5,8 +5,8 @@ import java.nio.file.Path;
 
 public class VertexShader extends Shader {
 
-    public VertexShader(Path filePath) {
-        super(filePath);
+    public VertexShader(String source) {
+        super(source);
     }
 
     @Override
