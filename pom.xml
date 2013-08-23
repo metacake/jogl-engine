@@ -7,7 +7,7 @@
     <!-- The Basics -->
     <groupId>metacake</groupId>
     <artifactId>examples</artifactId>
-    <version>a1.1</version>
+    <version>a1.0</version>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
@@ -19,17 +19,24 @@
         <dependency>
             <groupId>metacake</groupId>
             <artifactId>metacake</artifactId>
-            <version>a0.1</version>
+            <version>a1.1</version>
         </dependency>
+        <!--
         <dependency>
-            <groupId>org.jogamp.jogl</groupId>
+            <groupId>net.java.dev.jogl</groupId>
             <artifactId>jogl</artifactId>
-            <version>2.0.2</version>
+            <version>1.1.1-rc6</version>
         </dependency>
+        -->
         <dependency>
             <groupId>org.jogamp.gluegen</groupId>
             <artifactId>gluegen-rt-main</artifactId>
-            <version>2.0.2</version>
+            <version>2.0.2-rc12</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jogamp.jogl</groupId>
+            <artifactId>jogl-all-main</artifactId>
+            <version>2.0.2-rc12</version>
         </dependency>
     </dependencies>
     <properties>

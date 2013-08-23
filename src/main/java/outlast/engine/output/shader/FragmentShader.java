@@ -1,7 +1,6 @@
 package outlast.engine.output.shader;
 
 import javax.media.opengl.GL3;
-import java.nio.file.Path;
 
 public class FragmentShader extends Shader {
 
