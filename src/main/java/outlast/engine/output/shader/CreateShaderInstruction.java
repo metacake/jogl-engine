@@ -1,19 +1,20 @@
 package outlast.engine.output.shader;
 
 import com.jogamp.common.nio.Buffers;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import outlast.engine.output.Asset;
 import outlast.engine.output.JOGLInstruction;
 
 import javax.media.opengl.GL3;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class CreateShaderInstruction extends JOGLInstruction<GL3> {
+    private static final Logger logger = LoggerFactory.getLogger(CreateShaderInstruction.class);
 
     private List<Shader> shaders;
     private Asset<ShaderProgram> shaderAsset;
@@ -80,7 +81,7 @@ public class CreateShaderInstruction extends JOGLInstruction<GL3> {
         gl.glGetProgramInfoLog(handle, length, null, data);
         byte[] bytes = new byte[length];
         data.get(bytes);
-        System.out.println(new String(bytes));
+        logger.error(new String(bytes));
     }
 
     private boolean isLinked(GL3 gl, int handle) {
@@ -138,7 +139,7 @@ public class CreateShaderInstruction extends JOGLInstruction<GL3> {
         gl.glGetShaderInfoLog(handle, length, null, data);
         byte[] bytes = new byte[length];
         data.get(bytes);
-        System.out.println(new String(bytes));
+        logger.error(new String(bytes));
     }
 
     private boolean isCompiled(GL3 gl, int handle) {

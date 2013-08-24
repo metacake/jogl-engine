@@ -5,14 +5,12 @@ import io.metacake.core.process.state.GameState;
 import io.metacake.core.process.state.TransitionState;
 import outlast.engine.output.Asset;
 import outlast.engine.output.JOGLDevice;
-import outlast.engine.output.JOGLInstruction;
 import outlast.engine.output.buffer.VertexAttribute;
 import outlast.engine.output.shader.CreateShaderInstruction;
 import outlast.engine.output.shader.ShaderProgram;
 import outlast.engine.state.LoadingPhase;
 import outlast.engine.state.PhaseLoadingState;
 
-import javax.media.opengl.GL3;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -94,16 +92,6 @@ public class LoadingState extends PhaseLoadingState {
             @Override
             public RenderingInstructionBundle getRenderBundle() {
                 RenderingInstructionBundle bundle = new RenderingInstructionBundle();
-
-                bundle.add(JOGLDevice.NAME, new JOGLInstruction<GL3>() {
-                    @Override
-                    public void render(GL3 gl) {
-                        ShaderProgram shader = shaderAsset.getValue();
-                        shader.useProgram(gl);
-                        shader.disuseProgram(gl);
-                    }
-                });
-
                 MeshBuilder builder = MeshBuilder.create(new VertexAttribute(shaderAsset.getValue().getAttributeLocation("position"), 4, 0));
                 meshAsset.add(builder.createMesh(CUBE, INDICES));
                 meshContextAsset = builder.getAsset();
