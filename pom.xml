@@ -21,13 +21,6 @@
             <artifactId>metacake</artifactId>
             <version>a1.1</version>
         </dependency>
-        <!--
-        <dependency>
-            <groupId>net.java.dev.jogl</groupId>
-            <artifactId>jogl</artifactId>
-            <version>1.1.1-rc6</version>
-        </dependency>
-        -->
         <dependency>
             <groupId>org.jogamp.gluegen</groupId>
             <artifactId>gluegen-rt-main</artifactId>

@@ -5,12 +5,14 @@ import io.metacake.core.process.state.GameState;
 import io.metacake.core.process.state.TransitionState;
 import outlast.engine.output.Asset;
 import outlast.engine.output.JOGLDevice;
-import outlast.engine.output.buffer.*;
+import outlast.engine.output.JOGLInstruction;
+import outlast.engine.output.buffer.VertexAttribute;
 import outlast.engine.output.shader.CreateShaderInstruction;
 import outlast.engine.output.shader.ShaderProgram;
 import outlast.engine.state.LoadingPhase;
 import outlast.engine.state.PhaseLoadingState;
 
+import javax.media.opengl.GL3;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -20,29 +22,44 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LoadingState extends PhaseLoadingState {
-    public static final float[] LOWER_TRIANGLE = {
-            0.75f, 0.75f, 0.0f, 1.0f,
-            0.75f, -0.75f, 0.0f, 1.0f,
-            -0.75f, -0.75f, 0.0f, 1.0f,
+    public static final float[] CUBE = {
+             0.25f, -0.25f,  0.75f, 1.0f,
+            -0.25f, -0.25f,  0.75f, 1.0f,
+            -0.25f, -0.25f, -0.75f, 1.0f,
+             0.25f, -0.25f, -0.75f, 1.0f,
+             0.25f,  0.25f,  0.75f, 1.0f,
+            -0.25f,  0.25f,  0.75f, 1.0f,
+            -0.25f,  0.25f, -0.75f, 1.0f,
+             0.25f,  0.25f, -0.75f, 1.0f
     };
 
-    public static final float[] UPPER_TRIANGLE = {
-            0.75f, 0.75f, 0.0f, 1.0f,
-            -0.75f, -0.75f, 0.0f, 1.0f,
-            -0.75f, 0.75f, 0.0f, 1.0f
-    };
+    public static final short[] INDICES = {
+            0, 1, 2,
+            4, 7, 6,
+            0, 4, 5,
 
-    public static final short[] INDICES = { 0, 1, 2 };
+            1, 5, 6,
+            2, 6, 7,
+            4, 0, 3,
+
+            3, 0, 2,
+            5, 4, 6,
+            1, 0, 5,
+
+            2, 1, 6,
+            3, 2, 7,
+            7, 4, 3
+    };
 
 
     static String getSource(Path filePath) {
         StringBuilder builder = new StringBuilder();
         try {
-            for(String line : Files.readAllLines(filePath, Charset.defaultCharset())) {
+            for (String line : Files.readAllLines(filePath, Charset.defaultCharset())) {
                 builder.append(line).append("\n");
             }
             return builder.toString();
-        } catch(IOException io) {
+        } catch (IOException io) {
             throw new RuntimeException(io);
         }
     }
@@ -77,9 +94,18 @@ public class LoadingState extends PhaseLoadingState {
             @Override
             public RenderingInstructionBundle getRenderBundle() {
                 RenderingInstructionBundle bundle = new RenderingInstructionBundle();
+
+                bundle.add(JOGLDevice.NAME, new JOGLInstruction<GL3>() {
+                    @Override
+                    public void render(GL3 gl) {
+                        ShaderProgram shader = shaderAsset.getValue();
+                        shader.useProgram(gl);
+                        shader.disuseProgram(gl);
+                    }
+                });
+
                 MeshBuilder builder = MeshBuilder.create(new VertexAttribute(shaderAsset.getValue().getAttributeLocation("position"), 4, 0));
-                meshAsset.add(builder.createMesh(UPPER_TRIANGLE, INDICES));
-                meshAsset.add(builder.createMesh(LOWER_TRIANGLE, INDICES));
+                meshAsset.add(builder.createMesh(CUBE, INDICES));
                 meshContextAsset = builder.getAsset();
                 bundle.add(JOGLDevice.NAME, builder);
                 return bundle;
