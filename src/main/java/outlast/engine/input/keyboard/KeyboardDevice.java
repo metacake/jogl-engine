@@ -59,7 +59,4 @@ public class KeyboardDevice implements InputDevice, KeyListener {
             }
         }
     }
-
-    @Override
-    public void keyTyped(KeyEvent keyEvent) {}
 }
