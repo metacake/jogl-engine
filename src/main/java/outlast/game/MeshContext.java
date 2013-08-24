@@ -6,7 +6,7 @@ import outlast.engine.output.buffer.VertexAttributeObject;
 
 import javax.media.opengl.GL3;
 
-public class MeshContext extends JOGLInstruction<GL3>{
+public class MeshContext implements JOGLInstruction<GL3>{
 
     private BufferObject vertexBuffer, indexBuffer;
     private VertexAttributeObject vertexAttributeObject;

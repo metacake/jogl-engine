@@ -1,6 +1,5 @@
 package outlast.engine.output.shader;
 
-import outlast.engine.output.Asset;
 import outlast.engine.output.NativeObject;
 
 import javax.media.opengl.GL3;
@@ -9,8 +8,8 @@ import java.util.Map;
 
 public class ShaderProgram extends NativeObject {
 
-    public static CreateShaderInstruction create(Asset<ShaderProgram> asset) {
-        return new CreateShaderInstruction(asset);
+    public static CreateShaderInstruction create(ShaderProgram shaderProgram) {
+        return new CreateShaderInstruction(shaderProgram);
     }
 
     private Map<String, Integer> uniforms = new HashMap<>();

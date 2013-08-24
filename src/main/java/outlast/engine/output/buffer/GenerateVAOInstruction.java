@@ -1,13 +1,12 @@
 package outlast.engine.output.buffer;
 
 import com.jogamp.common.nio.Buffers;
-import outlast.engine.output.Asset;
 import outlast.engine.output.JOGLInstruction;
 
 import javax.media.opengl.GL3;
 import java.nio.IntBuffer;
 
-public class GenerateVAOInstruction extends JOGLInstruction<GL3> {
+public class GenerateVAOInstruction implements JOGLInstruction<GL3> {
 
     private VertexAttributeObject vao;
 
@@ -24,8 +23,8 @@ public class GenerateVAOInstruction extends JOGLInstruction<GL3> {
         return this;
     }
 
-    public Asset<VertexAttributeObject> getAsset() {
-        return new Asset<>(vao);
+    public VertexAttributeObject getVao() {
+        return vao;
     }
 
     @Override

@@ -1,14 +1,13 @@
 package outlast.engine.output.buffer;
 
 import com.jogamp.common.nio.Buffers;
-import outlast.engine.output.Asset;
 import outlast.engine.output.JOGLInstruction;
 
 import javax.media.opengl.GL3;
 import java.nio.Buffer;
 import java.nio.IntBuffer;
 
-public class GenerateBufferInstruction extends JOGLInstruction<GL3> {
+public class GenerateBufferInstruction implements JOGLInstruction<GL3> {
 
     public static GenerateBufferInstruction generateBuffer(int target) {
         return new GenerateBufferInstruction(target);
@@ -40,8 +39,8 @@ public class GenerateBufferInstruction extends JOGLInstruction<GL3> {
         return this;
     }
 
-    public Asset<BufferObject> getAsset() {
-        return new Asset<>(bufferObject);
+    public BufferObject getBufferObject() {
+        return bufferObject;
     }
 
     @Override

@@ -3,7 +3,6 @@ package outlast.engine.output.shader;
 import com.jogamp.common.nio.Buffers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import outlast.engine.output.Asset;
 import outlast.engine.output.JOGLInstruction;
 
 import javax.media.opengl.GL3;
@@ -13,14 +12,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class CreateShaderInstruction extends JOGLInstruction<GL3> {
+public class CreateShaderInstruction implements JOGLInstruction<GL3> {
     private static final Logger logger = LoggerFactory.getLogger(CreateShaderInstruction.class);
 
     private List<Shader> shaders;
-    private Asset<ShaderProgram> shaderAsset;
+    private ShaderProgram shaderProgram;
 
-    CreateShaderInstruction(Asset<ShaderProgram> shaderAsset) {
-        this.shaderAsset = shaderAsset;
+    CreateShaderInstruction(ShaderProgram shaderProgram) {
+        this.shaderProgram = shaderProgram;
         shaders = new ArrayList<>();
     }
 
@@ -60,7 +59,7 @@ public class CreateShaderInstruction extends JOGLInstruction<GL3> {
         for (Shader shader : shaders) {
             gl.glDetachShader(handle, shader.getHandle());
         }
-        shaderAsset.getValue().setHandle(handle);
+        shaderProgram.setHandle(handle);
         getUniforms(gl, handle);
         getAttributes(gl, handle);
     }
@@ -101,7 +100,7 @@ public class CreateShaderInstruction extends JOGLInstruction<GL3> {
             byte[] bytearr = new byte[buffer.remaining()];
             buffer.get(bytearr);
             String name = new String(bytearr).trim();
-            shaderAsset.getValue().addUniform(name, gl.glGetUniformLocation(handle, name));
+            shaderProgram.addUniform(name, gl.glGetUniformLocation(handle, name));
         }
     }
 
@@ -116,7 +115,7 @@ public class CreateShaderInstruction extends JOGLInstruction<GL3> {
             byte[] bytearr = new byte[buffer.remaining()];
             buffer.get(bytearr);
             String name = new String(bytearr).trim();
-            shaderAsset.getValue().addAttribute(name, gl.glGetAttribLocation(handle, name));
+            shaderProgram.addAttribute(name, gl.glGetAttribLocation(handle, name));
         }
     }
 

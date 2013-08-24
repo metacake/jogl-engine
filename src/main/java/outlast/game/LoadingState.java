@@ -3,7 +3,6 @@ package outlast.game;
 import io.metacake.core.output.RenderingInstructionBundle;
 import io.metacake.core.process.state.GameState;
 import io.metacake.core.process.state.TransitionState;
-import outlast.engine.output.Asset;
 import outlast.engine.output.JOGLDevice;
 import outlast.engine.output.buffer.VertexAttribute;
 import outlast.engine.output.shader.CreateShaderInstruction;
@@ -62,9 +61,9 @@ public class LoadingState extends PhaseLoadingState {
         }
     }
 
-    Asset<ShaderProgram> shaderAsset = new Asset<>(new ShaderProgram());
-    Asset<MeshContext> meshContextAsset;
-    List<Asset<Mesh>> meshAsset = new ArrayList<>();
+    ShaderProgram shaderProgram = new ShaderProgram();
+    MeshContext meshContext;
+    List<Mesh> meshes = new ArrayList<>();
 
     public LoadingState() {
         super();
@@ -79,7 +78,7 @@ public class LoadingState extends PhaseLoadingState {
                 RenderingInstructionBundle bundle = new RenderingInstructionBundle();
                 Path vPath = Paths.get("engine", "src", "main", "resources", "vertex.glsl");
                 Path fPath = Paths.get("engine", "src", "main", "resources", "fragment.glsl");
-                CreateShaderInstruction inst = ShaderProgram.create(shaderAsset);
+                CreateShaderInstruction inst = ShaderProgram.create(shaderProgram);
                 inst.withVertexShader(getSource(vPath)).withFragmentShader(getSource(fPath));
                 bundle.add(JOGLDevice.NAME, inst);
                 return bundle;
@@ -92,9 +91,9 @@ public class LoadingState extends PhaseLoadingState {
             @Override
             public RenderingInstructionBundle getRenderBundle() {
                 RenderingInstructionBundle bundle = new RenderingInstructionBundle();
-                MeshBuilder builder = MeshBuilder.create(new VertexAttribute(shaderAsset.getValue().getAttributeLocation("position"), 4, 0));
-                meshAsset.add(builder.createMesh(CUBE, INDICES));
-                meshContextAsset = builder.getAsset();
+                MeshBuilder builder = MeshBuilder.create(new VertexAttribute(shaderProgram.getAttributeLocation("position"), 4, 0));
+                meshes.add(builder.createMesh(CUBE, INDICES));
+                meshContext = builder.getMeshContext();
                 bundle.add(JOGLDevice.NAME, builder);
                 return bundle;
             }
@@ -103,6 +102,6 @@ public class LoadingState extends PhaseLoadingState {
 
     @Override
     protected GameState nextState() {
-        return TransitionState.transitionWithTriggers(new MainState(shaderAsset, meshContextAsset, meshAsset));
+        return TransitionState.transitionWithTriggers(new MainState(shaderProgram, meshContext, meshes));
     }
 }

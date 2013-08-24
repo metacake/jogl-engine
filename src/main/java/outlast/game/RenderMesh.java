@@ -1,18 +1,17 @@
 package outlast.game;
 
-import outlast.engine.output.Asset;
 import outlast.engine.output.JOGLInstruction;
 import outlast.engine.output.shader.ShaderProgram;
 
 import javax.media.opengl.GL3;
 import java.util.List;
 
-public class RenderMesh extends JOGLInstruction<GL3> {
+public class RenderMesh implements JOGLInstruction<GL3> {
     MeshContext context;
-    List<Asset<Mesh>> meshes;
+    List<Mesh> meshes;
     ShaderProgram shader;
 
-    public RenderMesh(MeshContext context, List<Asset<Mesh>> meshes, ShaderProgram shader) {
+    public RenderMesh(MeshContext context, List<Mesh> meshes, ShaderProgram shader) {
         this.context = context;
         this.meshes = meshes;
         this.shader = shader;
@@ -24,8 +23,8 @@ public class RenderMesh extends JOGLInstruction<GL3> {
 
         context.render(gl);
 
-        for(Asset<Mesh> mesh : meshes) {
-            mesh.getValue().render(gl);
+        for(Mesh mesh : meshes) {
+            mesh.render(gl);
         }
 
         shader.disuseProgram(gl);
