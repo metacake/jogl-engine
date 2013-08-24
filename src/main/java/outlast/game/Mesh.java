@@ -5,7 +5,7 @@ import outlast.engine.output.JOGLInstruction;
 
 import javax.media.opengl.GL3;
 
-public class Mesh extends JOGLInstruction<GL3> {
+public class Mesh implements JOGLInstruction<GL3> {
 
     private int count, drawPrimitive, type, offset;
 
