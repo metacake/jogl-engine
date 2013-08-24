@@ -9,6 +9,8 @@ import outlast.engine.output.shader.ShaderProgram;
 import java.util.List;
 
 public class MainState extends UserState {
+    private final ScreenClearInstruction clearInstruction = new ScreenClearInstruction();
+
     private ShaderProgram shader;
     private MeshContext meshContext;
     private List<Mesh> meshes;
@@ -27,6 +29,7 @@ public class MainState extends UserState {
     @Override
     public RenderingInstructionBundle renderingInstructions() {
         RenderingInstructionBundle bundle = new RenderingInstructionBundle();
+        bundle.add(JOGLDevice.NAME, clearInstruction);
         bundle.add(JOGLDevice.NAME, new RenderMesh(meshContext, meshes, shader));
         return bundle;
     }
