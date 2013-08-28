@@ -1,15 +1,19 @@
 package outlast.game;
 
+import com.jogamp.common.nio.Buffers;
 import io.metacake.core.output.RenderingInstructionBundle;
 import io.metacake.core.process.state.GameState;
 import io.metacake.core.process.state.TransitionState;
 import outlast.engine.output.JOGLDevice;
+import outlast.engine.output.JOGLInstruction;
 import outlast.engine.output.buffer.VertexAttribute;
 import outlast.engine.output.shader.CreateShaderInstruction;
 import outlast.engine.output.shader.ShaderProgram;
 import outlast.engine.state.LoadingPhase;
 import outlast.engine.state.PhaseLoadingState;
+import outlast.engine.util.math.Matrix4f;
 
+import javax.media.opengl.GL3;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -20,14 +24,14 @@ import java.util.List;
 
 public class LoadingState extends PhaseLoadingState {
     public static final float[] CUBE = {
-             0.25f, -0.25f,  0.75f, 1.0f,
-            -0.25f, -0.25f,  0.75f, 1.0f,
-            -0.25f, -0.25f, -0.75f, 1.0f,
-             0.25f, -0.25f, -0.75f, 1.0f,
-             0.25f,  0.25f,  0.75f, 1.0f,
-            -0.25f,  0.25f,  0.75f, 1.0f,
-            -0.25f,  0.25f, -0.75f, 1.0f,
-             0.25f,  0.25f, -0.75f, 1.0f
+             0.25f, -0.25f,  1.25f, 1.0f,  1.0f, 1.0f, 1.0f, 1.0f,
+            -0.25f, -0.25f,  1.25f, 1.0f,  1.0f, 1.0f, 1.0f, 1.0f,
+            -0.25f, -0.25f, -1.25f, 1.0f,  1.0f, 1.0f, 1.0f, 1.0f,
+             0.25f, -0.25f, -1.25f, 1.0f,  1.0f, 1.0f, 1.0f, 1.0f,
+             0.25f,  0.25f,  1.25f, 1.0f,  1.0f, 1.0f, 1.0f, 1.0f,
+            -0.25f,  0.25f,  1.25f, 1.0f,  1.0f, 1.0f, 1.0f, 1.0f,
+            -0.25f,  0.25f, -1.25f, 1.0f,  1.0f, 1.0f, 1.0f, 1.0f,
+             0.25f,  0.25f, -1.25f, 1.0f,  1.0f, 1.0f, 1.0f, 1.0f
     };
 
     public static final short[] INDICES = {
@@ -78,9 +82,27 @@ public class LoadingState extends PhaseLoadingState {
                 RenderingInstructionBundle bundle = new RenderingInstructionBundle();
                 Path vPath = Paths.get("engine", "src", "main", "resources", "vertex.glsl");
                 Path fPath = Paths.get("engine", "src", "main", "resources", "fragment.glsl");
-                CreateShaderInstruction inst = ShaderProgram.create(shaderProgram);
+                CreateShaderInstruction inst = CreateShaderInstruction.create(shaderProgram);
                 inst.withVertexShader(getSource(vPath)).withFragmentShader(getSource(fPath));
                 bundle.add(JOGLDevice.NAME, inst);
+                bundle.add(JOGLDevice.NAME, new JOGLInstruction<GL3>() {
+                    @Override
+                    public void render(GL3 gl) {
+                        float frustumScale = 1.0f;
+                        float zNear = 1.0f;
+                        float zFar = 3.0f;
+                        Matrix4f perspectiveMatrix = new Matrix4f();
+                        perspectiveMatrix.set(0, 0, frustumScale);
+                        perspectiveMatrix.set(1, 1, frustumScale);
+                        perspectiveMatrix.set(2, 2, (zFar + zNear) / (zNear - zFar));
+                        perspectiveMatrix.set(2, 3, (2 * zFar * zNear) / (zNear - zFar));
+                        perspectiveMatrix.set(3, 2, -1.0f);
+                        System.out.println(perspectiveMatrix);
+                        shaderProgram.useProgram(gl);
+                        shaderProgram.uniformMat4(gl, "perspectiveMatrix", perspectiveMatrix);
+                        shaderProgram.disuseProgram(gl);
+                    }
+                });
                 return bundle;
             }
         };
@@ -91,7 +113,9 @@ public class LoadingState extends PhaseLoadingState {
             @Override
             public RenderingInstructionBundle getRenderBundle() {
                 RenderingInstructionBundle bundle = new RenderingInstructionBundle();
-                MeshBuilder builder = MeshBuilder.create(new VertexAttribute(shaderProgram.getAttributeLocation("position"), 4, 0));
+                MeshBuilder builder = MeshBuilder.create    (
+                        new VertexAttribute(shaderProgram.getAttributeLocation("position"), 4, 0),
+                        new VertexAttribute(shaderProgram.getAttributeLocation("color"), 4, 4 * Buffers.SIZEOF_FLOAT));
                 meshes.add(builder.createMesh(CUBE, INDICES));
                 meshContext = builder.getMeshContext();
                 bundle.add(JOGLDevice.NAME, builder);

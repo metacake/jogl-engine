@@ -1,17 +1,13 @@
 package outlast.engine.output.shader;
 
 import outlast.engine.output.NativeObject;
+import outlast.engine.util.math.Matrix4f;
 
 import javax.media.opengl.GL3;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ShaderProgram extends NativeObject {
-
-    public static CreateShaderInstruction create(ShaderProgram shaderProgram) {
-        return new CreateShaderInstruction(shaderProgram);
-    }
-
     private Map<String, Integer> uniforms = new HashMap<>();
     private Map<String, Integer> attributes = new HashMap<>();
 
@@ -21,6 +17,14 @@ public class ShaderProgram extends NativeObject {
 
     public void disuseProgram(GL3 gl) {
         gl.glUseProgram(0);
+    }
+
+    public void uniformf(GL3 gl, String name, float value) {
+        gl.glUniform1f(this.getUniformLocation(name), value);
+    }
+
+    public void uniformMat4(GL3 gl, String name, Matrix4f mat) {
+        gl.glUniformMatrix4fv(this.getUniformLocation(name), 1, false, mat.toArray(), 0);
     }
 
     public int getUniformLocation(String name) {

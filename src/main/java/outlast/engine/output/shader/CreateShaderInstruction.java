@@ -15,10 +15,14 @@ import java.util.List;
 public class CreateShaderInstruction implements JOGLInstruction<GL3> {
     private static final Logger logger = LoggerFactory.getLogger(CreateShaderInstruction.class);
 
+    public static CreateShaderInstruction create(ShaderProgram shaderProgram) {
+        return new CreateShaderInstruction(shaderProgram);
+    }
+
     private List<Shader> shaders;
     private ShaderProgram shaderProgram;
 
-    CreateShaderInstruction(ShaderProgram shaderProgram) {
+    private CreateShaderInstruction(ShaderProgram shaderProgram) {
         this.shaderProgram = shaderProgram;
         shaders = new ArrayList<>();
     }
