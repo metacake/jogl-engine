@@ -12,6 +12,9 @@ import outlast.engine.output.shader.ShaderProgram;
 import outlast.engine.state.LoadingPhase;
 import outlast.engine.state.PhaseLoadingState;
 import outlast.engine.util.math.Matrix4f;
+import outlast.game.instructions.Mesh;
+import outlast.game.instructions.MeshBuilder;
+import outlast.game.instructions.MeshContext;
 
 import javax.media.opengl.GL3;
 import java.io.IOException;

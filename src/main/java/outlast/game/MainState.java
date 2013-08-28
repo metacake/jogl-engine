@@ -5,6 +5,10 @@ import io.metacake.core.process.state.GameState;
 import io.metacake.core.process.state.UserState;
 import outlast.engine.output.JOGLDevice;
 import outlast.engine.output.shader.ShaderProgram;
+import outlast.game.instructions.Mesh;
+import outlast.game.instructions.MeshContext;
+import outlast.game.instructions.RenderMesh;
+import outlast.game.instructions.ScreenClearInstruction;
 
 import java.util.List;
 

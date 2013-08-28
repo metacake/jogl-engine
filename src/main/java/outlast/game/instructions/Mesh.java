@@ -1,4 +1,4 @@
-package outlast.game;
+package outlast.game.instructions;
 
 import com.jogamp.common.nio.Buffers;
 import outlast.engine.output.JOGLInstruction;

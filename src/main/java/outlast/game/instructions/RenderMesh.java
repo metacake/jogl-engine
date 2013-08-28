@@ -1,4 +1,4 @@
-package outlast.game;
+package outlast.game.instructions;
 
 import outlast.engine.output.JOGLInstruction;
 import outlast.engine.output.shader.ShaderProgram;
