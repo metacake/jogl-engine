@@ -26,17 +26,13 @@ public abstract class PhaseLoadingState extends UserState {
 
     @Override
     public final GameState tick() {
-        if (phases.isEmpty()) {
-            return nextState();
-        } else {
-            return this;
-        }
+        return phases.isEmpty() ? nextState() : this;
     }
 
     protected abstract GameState nextState();
 
     @Override
     public final RenderingInstructionBundle renderingInstructions() {
-        return (phases.isEmpty()) ? RenderingInstructionBundle.EMPTY_BUNDLE : phases.poll().getRenderBundle();
+        return phases.isEmpty() ? RenderingInstructionBundle.EMPTY_BUNDLE : phases.poll().getRenderBundle();
     }
 }

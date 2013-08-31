@@ -116,7 +116,7 @@ public class LoadingState extends PhaseLoadingState {
             @Override
             public RenderingInstructionBundle getRenderBundle() {
                 RenderingInstructionBundle bundle = new RenderingInstructionBundle();
-                MeshBuilder builder = MeshBuilder.create    (
+                MeshBuilder builder = MeshBuilder.create(
                         new VertexAttribute(shaderProgram.getAttributeLocation("position"), 4, 0),
                         new VertexAttribute(shaderProgram.getAttributeLocation("color"), 4, 4 * Buffers.SIZEOF_FLOAT));
                 meshes.add(builder.createMesh(CUBE, INDICES));
