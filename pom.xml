@@ -6,7 +6,7 @@
 
     <!-- The Basics -->
     <groupId>metacake</groupId>
-    <artifactId>examples</artifactId>
+    <artifactId>JOGL_Engine</artifactId>
     <version>a1.0</version>
     <packaging>jar</packaging>
     <dependencies>
