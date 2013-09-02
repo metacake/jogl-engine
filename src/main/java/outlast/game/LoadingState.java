@@ -83,8 +83,8 @@ public class LoadingState extends PhaseLoadingState {
             @Override
             public RenderingInstructionBundle getRenderBundle() {
                 RenderingInstructionBundle bundle = new RenderingInstructionBundle();
-                Path vPath = Paths.get("engine", "src", "main", "resources", "vertex.glsl");
-                Path fPath = Paths.get("engine", "src", "main", "resources", "fragment.glsl");
+                Path vPath = Paths.get("src", "main", "resources", "vertex.glsl");
+                Path fPath = Paths.get("src", "main", "resources", "fragment.glsl");
                 CreateShaderInstruction inst = CreateShaderInstruction.create(shaderProgram);
                 inst.withVertexShader(getSource(vPath)).withFragmentShader(getSource(fPath));
                 bundle.add(JOGLDevice.NAME, inst);
