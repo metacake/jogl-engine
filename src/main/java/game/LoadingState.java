@@ -4,16 +4,16 @@ import com.jogamp.common.nio.Buffers;
 import game.instructions.Mesh;
 import game.instructions.MeshBuilder;
 import game.instructions.MeshContext;
+import io.metacake.core.output.RenderingInstruction;
 import io.metacake.core.output.RenderingInstructionBundle;
 import io.metacake.core.process.state.GameState;
 import io.metacake.core.process.state.TransitionState;
+import io.metacake.core.process.state.UserState;
 import joglengine.output.JOGLDevice;
 import joglengine.output.JOGLInstruction;
 import joglengine.output.buffer.VertexAttribute;
 import joglengine.output.shader.CreateShaderInstruction;
 import joglengine.output.shader.ShaderProgram;
-import joglengine.state.LoadingPhase;
-import joglengine.state.PhaseLoadingState;
 import joglengine.util.math.Matrix4f;
 
 import javax.media.opengl.GL3;
@@ -25,7 +25,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LoadingState extends PhaseLoadingState {
+public class LoadingState extends UserState {
     public static final float[] CUBE = {
              0.25f, -0.25f,  1.25f, 1.0f,  1.0f, 1.0f, 1.0f, 1.0f,
             -0.25f, -0.25f,  1.25f, 1.0f,  1.0f, 1.0f, 1.0f, 1.0f,
@@ -72,63 +72,60 @@ public class LoadingState extends PhaseLoadingState {
     MeshContext meshContext;
     List<Mesh> meshes = new ArrayList<>();
 
-    public LoadingState() {
-        super();
-        this.addPhase(phase0());
-        this.addPhase(phase1());
+    private RenderingInstruction phase0() {
+        Path vPath = Paths.get("src", "main", "resources", "vertex.glsl");
+        Path fPath = Paths.get("src", "main", "resources", "fragment.glsl");
+        CreateShaderInstruction inst = CreateShaderInstruction.create(shaderProgram);
+        inst.withVertexShader(getSource(vPath)).withFragmentShader(getSource(fPath));
+        return inst;
     }
 
-    private LoadingPhase phase0() {
-        return new LoadingPhase() {
+    private RenderingInstruction phase1() {
+        return new JOGLInstruction<GL3>() {
             @Override
-            public RenderingInstructionBundle getRenderBundle() {
-                RenderingInstructionBundle bundle = new RenderingInstructionBundle();
-                Path vPath = Paths.get("src", "main", "resources", "vertex.glsl");
-                Path fPath = Paths.get("src", "main", "resources", "fragment.glsl");
-                CreateShaderInstruction inst = CreateShaderInstruction.create(shaderProgram);
-                inst.withVertexShader(getSource(vPath)).withFragmentShader(getSource(fPath));
-                bundle.add(JOGLDevice.NAME, inst);
-                bundle.add(JOGLDevice.NAME, new JOGLInstruction<GL3>() {
-                    @Override
-                    public void render(GL3 gl) {
-                        float frustumScale = 1.0f;
-                        float zNear = 1.0f;
-                        float zFar = 3.0f;
-                        Matrix4f perspectiveMatrix = new Matrix4f();
-                        perspectiveMatrix.set(0, 0, frustumScale);
-                        perspectiveMatrix.set(1, 1, frustumScale);
-                        perspectiveMatrix.set(2, 2, (zFar + zNear) / (zNear - zFar));
-                        perspectiveMatrix.set(2, 3, (2 * zFar * zNear) / (zNear - zFar));
-                        perspectiveMatrix.set(3, 2, -1.0f);
-                        System.out.println(perspectiveMatrix);
-                        shaderProgram.useProgram(gl);
-                        shaderProgram.uniformMat4(gl, "perspectiveMatrix", perspectiveMatrix);
-                        shaderProgram.disuseProgram(gl);
-                    }
-                });
-                return bundle;
+            public void render(GL3 gl) {
+                float frustumScale = 1.0f;
+                float zNear = 1.0f;
+                float zFar = 3.0f;
+                Matrix4f perspectiveMatrix = new Matrix4f();
+                perspectiveMatrix.set(0, 0, frustumScale);
+                perspectiveMatrix.set(1, 1, frustumScale);
+                perspectiveMatrix.set(2, 2, (zFar + zNear) / (zNear - zFar));
+                perspectiveMatrix.set(2, 3, (2 * zFar * zNear) / (zNear - zFar));
+                perspectiveMatrix.set(3, 2, -1.0f);
+                System.out.println(perspectiveMatrix);
+                shaderProgram.useProgram(gl);
+                shaderProgram.uniformMat4(gl, "perspectiveMatrix", perspectiveMatrix);
+                shaderProgram.disuseProgram(gl);
             }
         };
     }
 
-    private LoadingPhase phase1() {
-        return new LoadingPhase() {
+    private RenderingInstruction phase2() {
+        return new JOGLInstruction<GL3>() {
             @Override
-            public RenderingInstructionBundle getRenderBundle() {
-                RenderingInstructionBundle bundle = new RenderingInstructionBundle();
+            public void render(GL3 gl) {
                 MeshBuilder builder = MeshBuilder.create(
                         new VertexAttribute(shaderProgram.getAttributeLocation("position"), 4, 0),
                         new VertexAttribute(shaderProgram.getAttributeLocation("color"), 4, 4 * Buffers.SIZEOF_FLOAT));
                 meshes.add(builder.createMesh(CUBE, INDICES));
                 meshContext = builder.getMeshContext();
-                bundle.add(JOGLDevice.NAME, builder);
-                return bundle;
+                builder.render(gl);
             }
         };
     }
 
     @Override
-    protected GameState nextState() {
+    public GameState tick() {
         return TransitionState.transitionWithTriggers(new MainState(shaderProgram, meshContext, meshes));
+    }
+
+    @Override
+    public RenderingInstructionBundle renderingInstructions() {
+        RenderingInstructionBundle bundle = new RenderingInstructionBundle();
+        bundle.add(JOGLDevice.NAME,phase0());
+        bundle.add(JOGLDevice.NAME,phase1());
+        bundle.add(JOGLDevice.NAME,phase2());
+        return bundle;
     }
 }

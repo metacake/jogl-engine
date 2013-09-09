@@ -19,17 +19,17 @@
         <dependency>
             <groupId>metacake</groupId>
             <artifactId>metacake</artifactId>
-            <version>a1.1</version>
+            <version>a1.2</version>
         </dependency>
         <dependency>
             <groupId>org.jogamp.gluegen</groupId>
             <artifactId>gluegen-rt-main</artifactId>
-            <version>2.0.2-rc12</version>
+            <version>2.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.jogamp.jogl</groupId>
             <artifactId>jogl-all-main</artifactId>
-            <version>2.0.2-rc12</version>
+            <version>2.0.2</version>
         </dependency>
     </dependencies>
     <properties>
