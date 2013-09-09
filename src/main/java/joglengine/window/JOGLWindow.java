@@ -30,6 +30,7 @@ public class JOGLWindow extends CakeWindow<GLWindow> {
     @Override
     public void dispose() {
         window.setVisible(false);
+        window.destroy();
     }
 
     @Override

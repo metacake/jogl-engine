@@ -34,7 +34,6 @@ public class JOGLDevice implements OutputDevice {
 
     @Override
     public void shutdown() {
-        glWindow.destroy();
         animator.stop();
     }
 
