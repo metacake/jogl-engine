@@ -24,7 +24,7 @@ public class JOGLEventListener implements GLEventListener {
     public void display(GLAutoDrawable drawable) {
         GL3 gl = drawable.getGL().getGL3();
         for(RenderingInstruction instruction : state.getState()) {
-            ((JOGLInstruction<GL3>) instruction).render(gl);
+            instruction.render(gl);
         }
         state.setState(Collections.<RenderingInstruction>emptyList());
     }
