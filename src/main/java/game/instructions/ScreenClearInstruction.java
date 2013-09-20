@@ -9,7 +9,7 @@ public class ScreenClearInstruction implements JOGLInstruction<GL3> {
     private int red, blue, green, transparency;
 
     public ScreenClearInstruction() {
-        this(0,0,0,0);
+        this(0, 0, 0, 0);
     }
 
     public ScreenClearInstruction(int red, int blue, int green, int transparency) {

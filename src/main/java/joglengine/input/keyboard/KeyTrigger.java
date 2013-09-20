@@ -13,7 +13,6 @@ public class KeyTrigger implements ActionTrigger<Integer> {
     private List<Integer> codes;
     private List<KeyRecognizer> recognizers = new LinkedList<>();
 
-
     public KeyTrigger(Integer...codes) {
         this.codes = Arrays.asList(codes);
     }
@@ -29,23 +28,17 @@ public class KeyTrigger implements ActionTrigger<Integer> {
     }
 
     public void keyPressed(KeyEvent e) {
-        for (KeyRecognizer r : recognizers) {
-            r.keyPressed(e);
-        }
+        recognizers.forEach(recognizer -> recognizer.keyPressed(e));
     }
 
     public void keyReleased(KeyEvent e) {
-        for (KeyRecognizer recognizer : recognizers) {
-            recognizer.keyReleased(e);
-        }
+        recognizers.forEach(recognizer -> recognizer.keyReleased(e));
     }
 
     // EFFECT: adds r to this
     // returns this
     public KeyTrigger bindRecognizer(KeyRecognizer...rs) {
-        for(KeyRecognizer r : rs) {
-            recognizers.add(r);
-        }
+        Arrays.asList(rs).forEach(recognizer -> recognizers.add(recognizer));
         return this;
     }
 }

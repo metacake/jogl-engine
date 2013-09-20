@@ -4,46 +4,41 @@ import io.metacake.core.output.RenderingInstructionBundle;
 import io.metacake.core.process.state.GameState;
 import io.metacake.core.process.state.UserState;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
 public abstract class PhaseLoadingState extends UserState {
 
-    private Queue<LoadingPhase> phases;
-    private boolean firstInUse;
+    private Queue<LoadingPhase> loadingPhases;
+    private boolean currentWasSent;
 
-    public PhaseLoadingState(Queue<LoadingPhase> phases) {
-        this.phases = phases;
-        this.firstInUse = false;
+    protected PhaseLoadingState() {
+        this.loadingPhases = new LinkedList<>();
+        this.currentWasSent = false;
     }
 
-    public PhaseLoadingState(LoadingPhase... phases) {
-        this(new LinkedList<>(Arrays.asList(phases)));
-    }
-
-    public void addPhase(LoadingPhase phase) {
-        this.phases.add(phase);
+    protected void addLoadingPhase(LoadingPhase phase) {
+        loadingPhases.add(phase);
     }
 
     @Override
-    public final GameState tick() {
-        if (!phases.isEmpty() && firstInUse && phases.peek().isDone()) {
-            firstInUse = false;
-            phases.poll();
+    public GameState tick() {
+        return (loadingPhases.isEmpty()) ? this.nextState() : this;
+    }
+
+    @Override
+    public RenderingInstructionBundle renderingInstructions() {
+        if (!loadingPhases.isEmpty() && loadingPhases.peek().isDone()) {
+            loadingPhases.poll();
+            currentWasSent = false;
         }
-        return phases.isEmpty() ? nextState() : this;
+        if (!loadingPhases.isEmpty() && !currentWasSent) {
+            currentWasSent = true;
+            return loadingPhases.peek().getBundle();
+        } else {
+            return RenderingInstructionBundle.EMPTY_BUNDLE;
+        }
     }
 
     protected abstract GameState nextState();
-
-    @Override
-    public final RenderingInstructionBundle renderingInstructions() {
-        if (phases.isEmpty() || (firstInUse && !phases.peek().isDone())) {
-            return RenderingInstructionBundle.EMPTY_BUNDLE;
-        } else {
-            firstInUse = true;
-            return phases.peek().createBundle();
-        }
-    }
 }

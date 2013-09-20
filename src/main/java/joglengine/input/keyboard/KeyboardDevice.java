@@ -2,14 +2,15 @@ package joglengine.input.keyboard;
 
 import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.newt.event.KeyListener;
-import joglengine.window.JOGLWindow;
 import io.metacake.core.common.window.CakeWindow;
 import io.metacake.core.input.ActionTrigger;
 import io.metacake.core.input.InputDeviceName;
 import io.metacake.core.input.system.InputDevice;
+import joglengine.window.JOGLWindow;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class KeyboardDevice implements InputDevice, KeyListener {
     public static final InputDeviceName NAME = new InputDeviceName();
@@ -44,19 +45,19 @@ public class KeyboardDevice implements InputDevice, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent keyEvent) {
-        for(KeyTrigger trigger : triggers) {
-            if(trigger.getCodes().contains(keyEvent.getKeyCode())) {
-                trigger.keyPressed(keyEvent);
-            }
-        }
+        handleKey(keyEvent, (k) -> k.keyPressed(keyEvent));
     }
 
     @Override
     public void keyReleased(KeyEvent keyEvent) {
-        for(KeyTrigger trigger : triggers) {
+        handleKey(keyEvent, (k) -> k.keyReleased(keyEvent));
+    }
+
+    private void handleKey(KeyEvent keyEvent, Consumer<KeyTrigger> consumer) {
+        triggers.forEach(trigger -> {
             if(trigger.getCodes().contains(keyEvent.getKeyCode())) {
-                trigger.keyReleased(keyEvent);
+                consumer.accept(trigger);
             }
-        }
+        });
     }
 }

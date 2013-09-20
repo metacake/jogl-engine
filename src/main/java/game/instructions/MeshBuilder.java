@@ -20,9 +20,7 @@ public class MeshBuilder implements JOGLInstruction<GL3> {
 
     private MeshBuilder(VertexAttribute... attributes) {
         vaoInst = GenerateVAOInstruction.create();
-        for(VertexAttribute attribute : attributes) {
-            vaoInst.withVertexAttribute(attribute);
-        }
+        Arrays.asList(attributes).forEach(attribute -> vaoInst.withVertexAttribute(attribute));
     }
 
     public Mesh createMesh(float[] verts, short[] inds) {

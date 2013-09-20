@@ -22,27 +22,19 @@ public class MouseTrigger implements ActionTrigger<Integer> {
     }
 
     public void buttonPress(MouseEvent e) {
-        for (MouseRecognizer r : recognizers) {
-            r.buttonPress(e);
-        }
+        recognizers.forEach(recognizer -> recognizer.buttonPress(e));
     }
 
     public void buttonRelease(MouseEvent e) {
-        for (MouseRecognizer recognizer : recognizers) {
-            recognizer.buttenRelease(e);
-        }
+        recognizers.forEach(recognizer -> recognizer.buttenRelease(e));
     }
 
     public void mouseMotion(MouseEvent e) {
-        for (MouseRecognizer recognizer : recognizers) {
-            recognizer.mouseMotion(e);
-        }
+        recognizers.forEach(recognizer -> recognizer.mouseMotion(e));
     }
 
     public void mouseDragged(MouseEvent e) {
-        for (MouseRecognizer recognizer : recognizers) {
-            recognizer.mouseMotion(e);
-        }
+        recognizers.forEach(recognizer -> recognizer.mouseMotion(e));
     }
 
     // EFFECT: adds r to this

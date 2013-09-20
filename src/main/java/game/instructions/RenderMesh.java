@@ -22,10 +22,7 @@ public class RenderMesh implements JOGLInstruction<GL3> {
         shader.useProgram(gl);
 
         context.render(gl);
-
-        for(Mesh mesh : meshes) {
-            mesh.render(gl);
-        }
+        meshes.forEach(mesh -> mesh.render(gl));
 
         shader.disuseProgram(gl);
     }

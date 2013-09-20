@@ -52,17 +52,11 @@ public class CreateShaderInstruction implements JOGLInstruction<GL3> {
     }
 
     private void createProgram(GL3 gl, List<Shader> shaders) {
-        for (Shader shader : shaders) {
-            compile(gl, shader);
-        }
+        shaders.forEach(shader -> compile(gl, shader));
         int handle = gl.glCreateProgram();
-        for (Shader shader : shaders) {
-            gl.glAttachShader(handle, shader.getHandle());
-        }
+        shaders.forEach(shader -> gl.glAttachShader(handle, shader.getHandle()));
         linkPrograms(gl, handle);
-        for (Shader shader : shaders) {
-            gl.glDetachShader(handle, shader.getHandle());
-        }
+        shaders.forEach(shader -> gl.glDetachShader(handle, shader.getHandle()));
         shaderProgram.setHandle(handle);
         getUniforms(gl, handle);
         getAttributes(gl, handle);

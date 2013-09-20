@@ -7,7 +7,7 @@
     <!-- The Basics -->
     <groupId>metacake</groupId>
     <artifactId>JOGL_Engine</artifactId>
-    <version>a1.0</version>
+    <version>a1.1.0</version>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
@@ -19,7 +19,7 @@
         <dependency>
             <groupId>metacake</groupId>
             <artifactId>metacake</artifactId>
-            <version>a1.3</version>
+            <version>a2.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.jogamp.gluegen</groupId>
@@ -34,8 +34,8 @@
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
     <!-- Build Settings -->
