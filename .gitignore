@@ -11,6 +11,10 @@
 log/
 target/
 
+# gradle
+.gradle
+build/
+
 
 # generic files to ignore
 .DS_Store
