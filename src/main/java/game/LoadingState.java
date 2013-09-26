@@ -23,20 +23,19 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
 public class LoadingState extends PhaseLoadingState {
     public static final float[] CUBE = {
-            0.25f, -0.25f, 1.25f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-            -0.25f, -0.25f, 1.25f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+            0.25f, -0.25f, 1.25f, 1.0f,   1.0f, 1.0f, 1.0f, 1.0f,
+            -0.25f, -0.25f, 1.25f, 1.0f,  1.0f, 1.0f, 1.0f, 1.0f,
             -0.25f, -0.25f, -1.25f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-            0.25f, -0.25f, -1.25f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-            0.25f, 0.25f, 1.25f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-            -0.25f, 0.25f, 1.25f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-            -0.25f, 0.25f, -1.25f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-            0.25f, 0.25f, -1.25f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f
+            0.25f, -0.25f, -1.25f, 1.0f,  1.0f, 1.0f, 1.0f, 1.0f,
+            0.25f, 0.25f, 1.25f, 1.0f,    1.0f, 1.0f, 1.0f, 1.0f,
+            -0.25f, 0.25f, 1.25f, 1.0f,   1.0f, 1.0f, 1.0f, 1.0f,
+            -0.25f, 0.25f, -1.25f, 1.0f,  1.0f, 1.0f, 1.0f, 1.0f,
+            0.25f, 0.25f, -1.25f, 1.0f,   1.0f, 1.0f, 1.0f, 1.0f
     };
 
     public static final short[] INDICES = {
@@ -97,9 +96,6 @@ public class LoadingState extends PhaseLoadingState {
                     perspectiveMatrix.set(2, 2, (zFar + zNear) / (zNear - zFar));
                     perspectiveMatrix.set(3, 2, (2 * zFar * zNear) / (zNear - zFar));
                     perspectiveMatrix.set(2, 3, -1.0f);
-                    System.out.println(perspectiveMatrix);
-                    System.out.println(Arrays.toString(perspectiveMatrix.toArray()));
-                    System.out.println();
                     shaderProgram.useProgram(gl);
                     shaderProgram.uniformMat4(gl, "perspectiveMatrix", perspectiveMatrix);
                     shaderProgram.disuseProgram(gl);
