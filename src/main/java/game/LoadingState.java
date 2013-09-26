@@ -28,32 +28,73 @@ import java.util.function.Supplier;
 
 public class LoadingState extends PhaseLoadingState {
     public static final float[] CUBE = {
-            0.25f, -0.25f, 1.25f, 1.0f,   1.0f, 1.0f, 1.0f, 1.0f,
-            -0.25f, -0.25f, 1.25f, 1.0f,  1.0f, 1.0f, 1.0f, 1.0f,
-            -0.25f, -0.25f, -1.25f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-            0.25f, -0.25f, -1.25f, 1.0f,  1.0f, 1.0f, 1.0f, 1.0f,
-            0.25f, 0.25f, 1.25f, 1.0f,    1.0f, 1.0f, 1.0f, 1.0f,
-            -0.25f, 0.25f, 1.25f, 1.0f,   1.0f, 1.0f, 1.0f, 1.0f,
-            -0.25f, 0.25f, -1.25f, 1.0f,  1.0f, 1.0f, 1.0f, 1.0f,
-            0.25f, 0.25f, -1.25f, 1.0f,   1.0f, 1.0f, 1.0f, 1.0f
+            0.25f,  0.25f, -1.25f, 1.0f,   0.0f, 0.0f, 1.0f, 1.0f,
+            0.25f, -0.25f, -1.25f, 1.0f,   0.0f, 0.0f, 1.0f, 1.0f,
+            -0.25f,  0.25f, -1.25f, 1.0f,  0.0f, 0.0f, 1.0f, 1.0f,
+
+            0.25f, -0.25f, -1.25f, 1.0f,   0.0f, 0.0f, 1.0f, 1.0f,
+            -0.25f, -0.25f, -1.25f, 1.0f,  0.0f, 0.0f, 1.0f, 1.0f,
+            -0.25f,  0.25f, -1.25f, 1.0f,  0.0f, 0.0f, 1.0f, 1.0f,
+
+            0.25f,  0.25f, -2.75f, 1.0f,   0.8f, 0.8f, 0.8f, 1.0f,
+            -0.25f,  0.25f, -2.75f, 1.0f,  0.8f, 0.8f, 0.8f, 1.0f,
+            0.25f, -0.25f, -2.75f, 1.0f,   0.8f, 0.8f, 0.8f, 1.0f,
+
+            0.25f, -0.25f, -2.75f, 1.0f,   0.8f, 0.8f, 0.8f, 1.0f,
+            -0.25f,  0.25f, -2.75f, 1.0f,  0.8f, 0.8f, 0.8f, 1.0f,
+            -0.25f, -0.25f, -2.75f, 1.0f,  0.8f, 0.8f, 0.8f, 1.0f,
+
+            -0.25f,  0.25f, -1.25f, 1.0f,  0.0f, 1.0f, 0.0f, 1.0f,
+            -0.25f, -0.25f, -1.25f, 1.0f,  0.0f, 1.0f, 0.0f, 1.0f,
+            -0.25f, -0.25f, -2.75f, 1.0f,  0.0f, 1.0f, 0.0f, 1.0f,
+
+            -0.25f,  0.25f, -1.25f, 1.0f,  0.0f, 1.0f, 0.0f, 1.0f,
+            -0.25f, -0.25f, -2.75f, 1.0f,  0.0f, 1.0f, 0.0f, 1.0f,
+            -0.25f,  0.25f, -2.75f, 1.0f,  0.0f, 1.0f, 0.0f, 1.0f,
+
+            0.25f,  0.25f, -1.25f, 1.0f,   0.5f, 0.5f, 0.0f, 1.0f,
+            0.25f, -0.25f, -2.75f, 1.0f,   0.5f, 0.5f, 0.0f, 1.0f,
+            0.25f, -0.25f, -1.25f, 1.0f,   0.5f, 0.5f, 0.0f, 1.0f,
+
+            0.25f,  0.25f, -1.25f, 1.0f,   0.5f, 0.5f, 0.0f, 1.0f,
+            0.25f,  0.25f, -2.75f, 1.0f,   0.5f, 0.5f, 0.0f, 1.0f,
+            0.25f, -0.25f, -2.75f, 1.0f,   0.5f, 0.5f, 0.0f, 1.0f,
+
+            0.25f,  0.25f, -2.75f, 1.0f,   1.0f, 0.0f, 0.0f, 1.0f,
+            0.25f,  0.25f, -1.25f, 1.0f,   1.0f, 0.0f, 0.0f, 1.0f,
+            -0.25f,  0.25f, -1.25f, 1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
+
+            0.25f,  0.25f, -2.75f, 1.0f,   1.0f, 0.0f, 0.0f, 1.0f,
+            -0.25f,  0.25f, -1.25f, 1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
+            -0.25f,  0.25f, -2.75f, 1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
+
+            0.25f, -0.25f, -2.75f, 1.0f,   0.0f, 1.0f, 1.0f, 1.0f,
+            -0.25f, -0.25f, -1.25f, 1.0f,  0.0f, 1.0f, 1.0f, 1.0f,
+            0.25f, -0.25f, -1.25f, 1.0f,   0.0f, 1.0f, 1.0f, 1.0f,
+
+            0.25f, -0.25f, -2.75f, 1.0f,   0.0f, 1.0f, 1.0f, 1.0f,
+            -0.25f, -0.25f, -2.75f, 1.0f,  0.0f, 1.0f, 1.0f, 1.0f,
+            -0.25f, -0.25f, -1.25f, 1.0f,  0.0f, 1.0f, 1.0f, 1.0f,
     };
 
     public static final short[] INDICES = {
             0, 1, 2,
-            4, 7, 6,
-            0, 4, 5,
+            3, 4, 5,
 
-            1, 5, 6,
-            2, 6, 7,
-            4, 0, 3,
+            6, 7, 8,
+            9, 10, 11,
 
-            3, 0, 2,
-            5, 4, 6,
-            1, 0, 5,
+            12, 13, 14,
+            15, 16, 17,
 
-            2, 1, 6,
-            3, 2, 7,
-            7, 4, 3
+            18, 19, 20,
+            21, 22, 23,
+
+            24, 25, 26,
+            27, 28, 29,
+
+            30, 31, 32,
+            33, 34, 35
     };
 
 
@@ -76,6 +117,7 @@ public class LoadingState extends PhaseLoadingState {
     public LoadingState() {
         this.addLoadingPhase(phase0());
         this.addLoadingPhase(phase1());
+        this.addLoadingPhase(phase2());
     }
 
     private LoadingPhase phase0() {
@@ -114,6 +156,19 @@ public class LoadingState extends PhaseLoadingState {
             meshes.add(builder.createMesh(CUBE, INDICES));
             meshContext = builder.getMeshContext();
             bundle.add(JOGLDevice.NAME, builder);
+            return bundle;
+        };
+        return new LoadingPhase(supplier);
+    }
+
+    private LoadingPhase phase2() {
+        Supplier<InspectingRenderingInstructionBundle> supplier = () -> {
+            InspectingRenderingInstructionBundle bundle = new InspectingRenderingInstructionBundle();
+            bundle.add(JOGLDevice.NAME, (JOGLInstruction<GL3>) (gl) -> {
+                gl.glEnable(GL3.GL_CULL_FACE);
+                gl.glCullFace(GL3.GL_BACK);
+                gl.glFrontFace(GL3.GL_CW);
+            });
             return bundle;
         };
         return new LoadingPhase(supplier);
