@@ -23,6 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -86,9 +87,7 @@ public class LoadingState extends PhaseLoadingState {
             CreateShaderInstruction inst = CreateShaderInstruction.create(shaderProgram);
             inst.withVertexShader(getSource(vPath)).withFragmentShader(getSource(fPath));
             bundle.add(JOGLDevice.NAME, inst);
-            bundle.add(JOGLDevice.NAME, new JOGLInstruction<GL3>() {
-                @Override
-                public void render(GL3 gl) {
+            bundle.add(JOGLDevice.NAME, (JOGLInstruction<GL3>) (GL3 gl) -> {
                     float frustumScale = 1.0f;
                     float zNear = 1.0f;
                     float zFar = 3.0f;
@@ -96,14 +95,15 @@ public class LoadingState extends PhaseLoadingState {
                     perspectiveMatrix.set(0, 0, frustumScale);
                     perspectiveMatrix.set(1, 1, frustumScale);
                     perspectiveMatrix.set(2, 2, (zFar + zNear) / (zNear - zFar));
-                    perspectiveMatrix.set(2, 3, (2 * zFar * zNear) / (zNear - zFar));
-                    perspectiveMatrix.set(3, 2, -1.0f);
+                    perspectiveMatrix.set(3, 2, (2 * zFar * zNear) / (zNear - zFar));
+                    perspectiveMatrix.set(2, 3, -1.0f);
                     System.out.println(perspectiveMatrix);
+                    System.out.println(Arrays.toString(perspectiveMatrix.toArray()));
+                    System.out.println();
                     shaderProgram.useProgram(gl);
                     shaderProgram.uniformMat4(gl, "perspectiveMatrix", perspectiveMatrix);
                     shaderProgram.disuseProgram(gl);
-                }
-            });
+                });
             return bundle;
         };
         return new LoadingPhase(supplier);

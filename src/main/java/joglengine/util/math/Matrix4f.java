@@ -30,7 +30,7 @@ public class Matrix4f {
         for(int i = 0; i < SIZE; i++) {
             builder.append("[");
             for(int j = 0; j < SIZE; j++) {
-                builder.append(this.get(i,j)).append(" ");
+                builder.append(this.get(j, i)).append(" ");
             }
             builder.append("]\n");
         }
