@@ -14,7 +14,7 @@ import joglengine.output.shader.CreateShaderInstruction;
 import joglengine.output.shader.ShaderProgram;
 import joglengine.state.LoadingPhase;
 import joglengine.state.PhaseLoadingState;
-import joglengine.util.math.Matrix4f;
+import joglengine.util.math.MatrixUtil;
 
 import javax.media.opengl.GL3;
 import java.io.IOException;
@@ -129,17 +129,12 @@ public class LoadingState extends PhaseLoadingState {
             inst.withVertexShader(getSource(vPath)).withFragmentShader(getSource(fPath));
             bundle.add(JOGLDevice.NAME, inst);
             bundle.add(JOGLDevice.NAME, (JOGLInstruction<GL3>) (GL3 gl) -> {
-                    float frustumScale = 1.0f;
                     float zNear = 1.0f;
-                    float zFar = 3.0f;
-                    Matrix4f perspectiveMatrix = new Matrix4f();
-                    perspectiveMatrix.set(0, 0, frustumScale);
-                    perspectiveMatrix.set(1, 1, frustumScale);
-                    perspectiveMatrix.set(2, 2, (zFar + zNear) / (zNear - zFar));
-                    perspectiveMatrix.set(3, 2, (2 * zFar * zNear) / (zNear - zFar));
-                    perspectiveMatrix.set(2, 3, -1.0f);
+                    float zFar = 10.0f;
+//                    Matrix4f mat = MatrixUtil.perspective(45.0f, 800.0f/600.0f, zNear, zFar);
+//                    System.out.println(MatrixUtil.perspective(45.0f, 800.0f/600.0f, zNear, zFar));
                     shaderProgram.useProgram(gl);
-                    shaderProgram.uniformMat4(gl, "perspectiveMatrix", perspectiveMatrix);
+                    shaderProgram.uniformMat4(gl, "perspectiveMatrix", MatrixUtil.perspective(45.0f, 800.0f/600.0f, zNear, zFar));
                     shaderProgram.disuseProgram(gl);
                 });
             return bundle;
@@ -164,7 +159,7 @@ public class LoadingState extends PhaseLoadingState {
     private LoadingPhase phase2() {
         Supplier<InspectingRenderingInstructionBundle> supplier = () -> {
             InspectingRenderingInstructionBundle bundle = new InspectingRenderingInstructionBundle();
-            bundle.add(JOGLDevice.NAME, (JOGLInstruction<GL3>) (gl) -> {
+            bundle.add(JOGLDevice.NAME, (JOGLInstruction<GL3>) (GL3 gl) -> {
                 gl.glEnable(GL3.GL_CULL_FACE);
                 gl.glCullFace(GL3.GL_BACK);
                 gl.glFrontFace(GL3.GL_CW);

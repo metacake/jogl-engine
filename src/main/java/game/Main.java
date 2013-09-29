@@ -3,7 +3,6 @@ package game;
 import io.metacake.core.BootstrapBuilder;
 import joglengine.output.JOGLDevice;
 import joglengine.window.JOGLWindow;
-import game.LoadingState;
 
 public class Main {
     public static void main(String...args) {
