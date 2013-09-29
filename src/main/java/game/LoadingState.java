@@ -15,6 +15,7 @@ import joglengine.output.shader.ShaderProgram;
 import joglengine.state.LoadingPhase;
 import joglengine.state.PhaseLoadingState;
 import joglengine.util.math.MatrixUtil;
+import joglengine.util.math.Vector3f;
 
 import javax.media.opengl.GL3;
 import java.io.IOException;
@@ -131,10 +132,9 @@ public class LoadingState extends PhaseLoadingState {
             bundle.add(JOGLDevice.NAME, (JOGLInstruction<GL3>) (GL3 gl) -> {
                     float zNear = 1.0f;
                     float zFar = 10.0f;
-//                    Matrix4f mat = MatrixUtil.perspective(45.0f, 800.0f/600.0f, zNear, zFar);
-//                    System.out.println(MatrixUtil.perspective(45.0f, 800.0f/600.0f, zNear, zFar));
                     shaderProgram.useProgram(gl);
-                    shaderProgram.uniformMat4(gl, "perspectiveMatrix", MatrixUtil.perspective(45.0f, 800.0f/600.0f, zNear, zFar));
+                    shaderProgram.uniformMat4(gl, "perspectiveMatrix", MatrixUtil.perspective(45.0f, 800.0f / 600.0f, zNear, zFar));
+                    shaderProgram.uniformVector3(gl, "offset", new Vector3f(0.5f, 0.5f, -1.5f));
                     shaderProgram.disuseProgram(gl);
                 });
             return bundle;

@@ -2,6 +2,7 @@ package joglengine.output.shader;
 
 import joglengine.output.NativeObject;
 import joglengine.util.math.Matrix4f;
+import joglengine.util.math.Vector3f;
 
 import javax.media.opengl.GL3;
 import java.util.HashMap;
@@ -25,6 +26,10 @@ public class ShaderProgram extends NativeObject {
 
     public void uniformMat4(GL3 gl, String name, Matrix4f mat) {
         gl.glUniformMatrix4fv(this.getUniformLocation(name), 1, false, mat.toArray(), 0);
+    }
+
+    public void uniformVector3(GL3 gl, String name, Vector3f v) {
+        gl.glUniform3f(this.getUniformLocation(name), v.x(), v.y(), v.z());
     }
 
     public int getUniformLocation(String name) {
