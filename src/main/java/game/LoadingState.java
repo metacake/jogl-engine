@@ -130,10 +130,8 @@ public class LoadingState extends PhaseLoadingState {
             inst.withVertexShader(getSource(vPath)).withFragmentShader(getSource(fPath));
             bundle.add(JOGLDevice.NAME, inst);
             bundle.add(JOGLDevice.NAME, (JOGLInstruction<GL3>) (GL3 gl) -> {
-                    float zNear = 1.0f;
-                    float zFar = 10.0f;
                     shaderProgram.useProgram(gl);
-                    shaderProgram.uniformMat4(gl, "perspectiveMatrix", MatrixUtil.perspective(45.0f, 800.0f / 600.0f, zNear, zFar));
+                    shaderProgram.uniformMat4(gl, "perspectiveMatrix", MatrixUtil.perspective(45.0f, 800.0f / 600.0f, 1.0f, 10.0f));
                     shaderProgram.uniformVector3(gl, "offset", new Vector3f(0.5f, 0.5f, -1.5f));
                     shaderProgram.disuseProgram(gl);
                 });
