@@ -22,7 +22,10 @@ public class RenderMesh implements JOGLInstruction<GL3> {
         shader.useProgram(gl);
 
         context.render(gl);
-        meshes.forEach(mesh -> mesh.render(gl));
+        meshes.forEach(mesh -> {
+            shader.uniformMat4(gl, "modelToCamera", mesh.getMatrix());
+            mesh.render(gl);
+        });
 
         shader.disuseProgram(gl);
     }

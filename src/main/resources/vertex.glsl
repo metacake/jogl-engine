@@ -6,10 +6,11 @@ uniform vec3 offset;
 
 out vec4 inColor;
 
-uniform mat4 perspectiveMatrix;
+uniform mat4 modelToCamera;
+uniform mat4 cameraToClip;
 
 void main() {
-    vec4 cameraPos = position + vec4(offset, 0);
-    gl_Position = perspectiveMatrix * cameraPos;
+    vec4 cameraPos = modelToCamera * position;
+    gl_Position = cameraToClip * cameraPos;
     inColor = color;
 }

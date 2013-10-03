@@ -15,7 +15,7 @@ import joglengine.output.shader.ShaderProgram;
 import joglengine.state.LoadingPhase;
 import joglengine.state.PhaseLoadingState;
 import joglengine.util.math.MatrixUtil;
-import joglengine.util.math.Vector3f;
+import joglengine.util.math.Transformation;
 
 import javax.media.opengl.GL3;
 import java.io.IOException;
@@ -114,11 +114,13 @@ public class LoadingState extends PhaseLoadingState {
     ShaderProgram shaderProgram = new ShaderProgram();
     MeshContext meshContext;
     List<Mesh> meshes = new ArrayList<>();
+    Transformation transformation = new Transformation();
 
     public LoadingState() {
         this.addLoadingPhase(phase0());
         this.addLoadingPhase(phase1());
         this.addLoadingPhase(phase2());
+        transformation.translate(1, 1, -3);
     }
 
     private LoadingPhase phase0() {
@@ -131,8 +133,7 @@ public class LoadingState extends PhaseLoadingState {
             bundle.add(JOGLDevice.NAME, inst);
             bundle.add(JOGLDevice.NAME, (JOGLInstruction<GL3>) (GL3 gl) -> {
                     shaderProgram.useProgram(gl);
-                    shaderProgram.uniformMat4(gl, "perspectiveMatrix", MatrixUtil.perspective(45.0f, 800.0f / 600.0f, 1.0f, 10.0f));
-                    shaderProgram.uniformVector3(gl, "offset", new Vector3f(0.5f, 0.5f, -1.5f));
+                    shaderProgram.uniformMat4(gl, "cameraToClip", MatrixUtil.perspective(45.0f, 800.0f / 600.0f, 1.0f, 45.0f));
                     shaderProgram.disuseProgram(gl);
                 });
             return bundle;
@@ -146,7 +147,7 @@ public class LoadingState extends PhaseLoadingState {
             MeshBuilder builder = MeshBuilder.create(
                     new VertexAttribute(shaderProgram.getAttributeLocation("position"), 4, 0),
                     new VertexAttribute(shaderProgram.getAttributeLocation("color"), 4, 4 * Buffers.SIZEOF_FLOAT));
-            meshes.add(builder.createMesh(CUBE, INDICES));
+            meshes.add(builder.createMesh(CUBE, INDICES, transformation));
             meshContext = builder.getMeshContext();
             bundle.add(JOGLDevice.NAME, builder);
             return bundle;
