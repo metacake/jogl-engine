@@ -1,5 +1,7 @@
-- Phased Loading has a race condition
-- Make Shader Creation more like the BufferObject creation
+Things to do for Alpha 1:
+;---------------------------------------------------------------------------------------------------------;
+- Camera
+- Textures
+- Wrapper to separate Meshes and transformation
+- Window Resize Hook
 - Documentation; cause there is some serious black fucking magic going on in this bitch
-- Basic Linear Algebra Library
-- Provide more Shader functionality
