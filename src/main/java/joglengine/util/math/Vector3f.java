@@ -24,4 +24,16 @@ public class Vector3f {
     public float z() {
         return z;
     }
+
+    public Vector3f multiply(float scale) {
+        return new Vector3f(x * scale, y * scale, z * scale);
+    }
+
+    public Vector3f normalize() {
+        return this.multiply(1.0f / this.magnitude());
+    }
+
+    public float magnitude() {
+        return (float) Math.sqrt((x * x) + (y * y) + (z * z));
+    }
 }

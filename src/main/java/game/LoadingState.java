@@ -16,6 +16,7 @@ import joglengine.state.LoadingPhase;
 import joglengine.state.PhaseLoadingState;
 import joglengine.util.math.MatrixUtil;
 import joglengine.util.math.Transformation;
+import joglengine.util.math.Vector3f;
 
 import javax.media.opengl.GL3;
 import java.io.IOException;
@@ -120,7 +121,9 @@ public class LoadingState extends PhaseLoadingState {
         this.addLoadingPhase(phase0());
         this.addLoadingPhase(phase1());
         this.addLoadingPhase(phase2());
-        transformation.translate(1, 1, -3);
+        transformation.translate(1, 1, -1);
+        transformation.rotate(new Vector3f(0, 0, 1), 90);
+        System.out.println(transformation.getRawMatrix());
     }
 
     private LoadingPhase phase0() {
@@ -133,7 +136,7 @@ public class LoadingState extends PhaseLoadingState {
             bundle.add(JOGLDevice.NAME, inst);
             bundle.add(JOGLDevice.NAME, (JOGLInstruction<GL3>) (GL3 gl) -> {
                     shaderProgram.useProgram(gl);
-                    shaderProgram.uniformMat4(gl, "cameraToClip", MatrixUtil.perspective(45.0f, 800.0f / 600.0f, 1.0f, 45.0f));
+                    shaderProgram.uniformMat4(gl, "cameraToClip", MatrixUtil.perspective(45.0f, 800.0f / 600.0f, 1.0f, 100.0f));
                     shaderProgram.disuseProgram(gl);
                 });
             return bundle;
