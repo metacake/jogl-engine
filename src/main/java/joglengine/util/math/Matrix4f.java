@@ -32,7 +32,13 @@ public class Matrix4f {
 
     public Matrix4f multiply(Matrix4f mat) {
         Matrix4f result = new Matrix4f();
-        for(int i = 0; )
+        for(int i = 0; i < SIZE; i++) {
+            for(int j = 0; j < SIZE; j++) {
+                for(int k = 0; k < SIZE; k++) {
+                    result.set(i, j, result.get(i, j) + (this.get(i, k) * mat.get(k, j)));
+                }
+            }
+        }
         return mat;
     }
 
