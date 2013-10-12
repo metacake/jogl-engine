@@ -30,6 +30,22 @@ public class Matrix4f {
         values[column*SIZE + row] = value;
     }
 
+    public Matrix4f multiply(Matrix4f mat) {
+        Matrix4f result = new Matrix4f();
+        for(int i = 0; )
+        return mat;
+    }
+
+    public Matrix4f transpose() {
+        Matrix4f matrix = new Matrix4f();
+        for(int i = 0; i < SIZE; i++) {
+            for(int j = 0; j < SIZE; j++) {
+                matrix.set(i, j, this.get(j, i));
+            }
+        }
+        return matrix;
+    }
+
     public float[] toArray() {
         return Arrays.copyOf(values, values.length);
     }

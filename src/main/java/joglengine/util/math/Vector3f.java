@@ -25,6 +25,18 @@ public class Vector3f {
         return z;
     }
 
+    public Vector3f add(Vector3f v) {
+        return new Vector3f(x + v.x(), y + v.y(), z + v.z());
+    }
+
+    public Vector3f subtract(Vector3f v) {
+        return new Vector3f(x - v.x(), y - v.y(), z - v.z());
+    }
+
+    public Vector3f negate() {
+        return new Vector3f(-x, -y, -z);
+    }
+
     public Vector3f multiply(float scale) {
         return new Vector3f(x * scale, y * scale, z * scale);
     }
@@ -35,5 +47,12 @@ public class Vector3f {
 
     public float magnitude() {
         return (float) Math.sqrt((x * x) + (y * y) + (z * z));
+    }
+
+    public Vector3f crossProduct(Vector3f v) {
+        float nx = (this.y() * v.z()) - (this.z() * v.y());
+        float ny = (this.z() * v.x()) - (this.x() * v.z());
+        float nz = (this.x() * v.y()) - (this.y() * v.x());
+        return new Vector3f(nx, ny, nz);
     }
 }
