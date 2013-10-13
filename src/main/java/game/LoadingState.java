@@ -4,6 +4,7 @@ import com.jogamp.common.nio.Buffers;
 import game.instructions.Mesh;
 import game.instructions.MeshBuilder;
 import game.instructions.MeshContext;
+import game.instructions.Model;
 import io.metacake.core.output.InspectingRenderingInstructionBundle;
 import io.metacake.core.process.state.GameState;
 import io.metacake.core.process.state.TransitionState;
@@ -16,7 +17,6 @@ import joglengine.state.LoadingPhase;
 import joglengine.state.PhaseLoadingState;
 import joglengine.util.math.MatrixUtil;
 import joglengine.util.math.Transformation;
-import joglengine.util.math.Vector3f;
 
 import javax.media.opengl.GL3;
 import java.io.IOException;
@@ -30,73 +30,27 @@ import java.util.function.Supplier;
 
 public class LoadingState extends PhaseLoadingState {
     public static final float[] CUBE = {
-            0.25f,  0.25f, -1.25f, 1.0f,   0.0f, 0.0f, 1.0f, 1.0f,
-            0.25f, -0.25f, -1.25f, 1.0f,   0.0f, 0.0f, 1.0f, 1.0f,
-            -0.25f,  0.25f, -1.25f, 1.0f,  0.0f, 0.0f, 1.0f, 1.0f,
+            +1.0f, +1.0f, +1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+            -1.0f, -1.0f, +1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+            -1.0f, +1.0f, -1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+            +1.0f, -1.0f, -1.0f, 1.0f, 0.5f, 0.5f, 0.0f, 1.0f,
 
-            0.25f, -0.25f, -1.25f, 1.0f,   0.0f, 0.0f, 1.0f, 1.0f,
-            -0.25f, -0.25f, -1.25f, 1.0f,  0.0f, 0.0f, 1.0f, 1.0f,
-            -0.25f,  0.25f, -1.25f, 1.0f,  0.0f, 0.0f, 1.0f, 1.0f,
-
-            0.25f,  0.25f, -2.75f, 1.0f,   0.8f, 0.8f, 0.8f, 1.0f,
-            -0.25f,  0.25f, -2.75f, 1.0f,  0.8f, 0.8f, 0.8f, 1.0f,
-            0.25f, -0.25f, -2.75f, 1.0f,   0.8f, 0.8f, 0.8f, 1.0f,
-
-            0.25f, -0.25f, -2.75f, 1.0f,   0.8f, 0.8f, 0.8f, 1.0f,
-            -0.25f,  0.25f, -2.75f, 1.0f,  0.8f, 0.8f, 0.8f, 1.0f,
-            -0.25f, -0.25f, -2.75f, 1.0f,  0.8f, 0.8f, 0.8f, 1.0f,
-
-            -0.25f,  0.25f, -1.25f, 1.0f,  0.0f, 1.0f, 0.0f, 1.0f,
-            -0.25f, -0.25f, -1.25f, 1.0f,  0.0f, 1.0f, 0.0f, 1.0f,
-            -0.25f, -0.25f, -2.75f, 1.0f,  0.0f, 1.0f, 0.0f, 1.0f,
-
-            -0.25f,  0.25f, -1.25f, 1.0f,  0.0f, 1.0f, 0.0f, 1.0f,
-            -0.25f, -0.25f, -2.75f, 1.0f,  0.0f, 1.0f, 0.0f, 1.0f,
-            -0.25f,  0.25f, -2.75f, 1.0f,  0.0f, 1.0f, 0.0f, 1.0f,
-
-            0.25f,  0.25f, -1.25f, 1.0f,   0.5f, 0.5f, 0.0f, 1.0f,
-            0.25f, -0.25f, -2.75f, 1.0f,   0.5f, 0.5f, 0.0f, 1.0f,
-            0.25f, -0.25f, -1.25f, 1.0f,   0.5f, 0.5f, 0.0f, 1.0f,
-
-            0.25f,  0.25f, -1.25f, 1.0f,   0.5f, 0.5f, 0.0f, 1.0f,
-            0.25f,  0.25f, -2.75f, 1.0f,   0.5f, 0.5f, 0.0f, 1.0f,
-            0.25f, -0.25f, -2.75f, 1.0f,   0.5f, 0.5f, 0.0f, 1.0f,
-
-            0.25f,  0.25f, -2.75f, 1.0f,   1.0f, 0.0f, 0.0f, 1.0f,
-            0.25f,  0.25f, -1.25f, 1.0f,   1.0f, 0.0f, 0.0f, 1.0f,
-            -0.25f,  0.25f, -1.25f, 1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
-
-            0.25f,  0.25f, -2.75f, 1.0f,   1.0f, 0.0f, 0.0f, 1.0f,
-            -0.25f,  0.25f, -1.25f, 1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
-            -0.25f,  0.25f, -2.75f, 1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
-
-            0.25f, -0.25f, -2.75f, 1.0f,   0.0f, 1.0f, 1.0f, 1.0f,
-            -0.25f, -0.25f, -1.25f, 1.0f,  0.0f, 1.0f, 1.0f, 1.0f,
-            0.25f, -0.25f, -1.25f, 1.0f,   0.0f, 1.0f, 1.0f, 1.0f,
-
-            0.25f, -0.25f, -2.75f, 1.0f,   0.0f, 1.0f, 1.0f, 1.0f,
-            -0.25f, -0.25f, -2.75f, 1.0f,  0.0f, 1.0f, 1.0f, 1.0f,
-            -0.25f, -0.25f, -1.25f, 1.0f,  0.0f, 1.0f, 1.0f, 1.0f,
+            -1.0f, -1.0f, -1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+            +1.0f, +1.0f, -1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+            +1.0f, -1.0f, +1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+            -1.0f, +1.0f, +1.0f, 1.0f, 0.5f, 0.5f, 0.0f, 1.0f
     };
 
     public static final short[] INDICES = {
             0, 1, 2,
-            3, 4, 5,
+            1, 0, 3,
+            2, 3, 0,
+            3, 2, 1,
 
-            6, 7, 8,
-            9, 10, 11,
-
-            12, 13, 14,
-            15, 16, 17,
-
-            18, 19, 20,
-            21, 22, 23,
-
-            24, 25, 26,
-            27, 28, 29,
-
-            30, 31, 32,
-            33, 34, 35
+            5, 4, 6,
+            4, 5, 7,
+            7, 6, 4,
+            6, 7, 5
     };
 
 
@@ -114,16 +68,16 @@ public class LoadingState extends PhaseLoadingState {
 
     ShaderProgram shaderProgram = new ShaderProgram();
     MeshContext meshContext;
-    List<Mesh> meshes = new ArrayList<>();
+    List<Model> models = new ArrayList<>();
     Transformation transformation = new Transformation();
 
     public LoadingState() {
         this.addLoadingPhase(phase0());
         this.addLoadingPhase(phase1());
         this.addLoadingPhase(phase2());
-        transformation.translate(1, 1, -1);
-        transformation.rotate(new Vector3f(0, 0, 1), 90);
-        System.out.println(transformation.getRawMatrix());
+        this.addLoadingPhase(phase3());
+        transformation.translate(0, 0, -25);
+        transformation.scale(2, 2, 2);
     }
 
     private LoadingPhase phase0() {
@@ -135,10 +89,10 @@ public class LoadingState extends PhaseLoadingState {
             inst.withVertexShader(getSource(vPath)).withFragmentShader(getSource(fPath));
             bundle.add(JOGLDevice.NAME, inst);
             bundle.add(JOGLDevice.NAME, (JOGLInstruction<GL3>) (GL3 gl) -> {
-                    shaderProgram.useProgram(gl);
-                    shaderProgram.uniformMat4(gl, "cameraToClip", MatrixUtil.perspective(45.0f, 800.0f / 600.0f, 1.0f, 100.0f));
-                    shaderProgram.disuseProgram(gl);
-                });
+                shaderProgram.useProgram(gl);
+                shaderProgram.uniformMat4(gl, "cameraToClip", MatrixUtil.perspective(45.0f, 800.0f / 600.0f, 1.0f, 100.0f));
+                shaderProgram.disuseProgram(gl);
+            });
             return bundle;
         };
         return new LoadingPhase(supplier);
@@ -150,9 +104,10 @@ public class LoadingState extends PhaseLoadingState {
             MeshBuilder builder = MeshBuilder.create(
                     new VertexAttribute(shaderProgram.getAttributeLocation("position"), 4, 0),
                     new VertexAttribute(shaderProgram.getAttributeLocation("color"), 4, 4 * Buffers.SIZEOF_FLOAT));
-            meshes.add(builder.createMesh(CUBE, INDICES, transformation));
+            Mesh mesh = builder.createMesh(CUBE, INDICES);
             meshContext = builder.getMeshContext();
             bundle.add(JOGLDevice.NAME, builder);
+            models.add(new Model(mesh, transformation));
             return bundle;
         };
         return new LoadingPhase(supplier);
@@ -171,8 +126,22 @@ public class LoadingState extends PhaseLoadingState {
         return new LoadingPhase(supplier);
     }
 
+    private LoadingPhase phase3() {
+        Supplier<InspectingRenderingInstructionBundle> supplier = () -> {
+            InspectingRenderingInstructionBundle bundle = new InspectingRenderingInstructionBundle();
+            bundle.add(JOGLDevice.NAME, (JOGLInstruction<GL3>) (GL3 gl) -> {
+                gl.glEnable(GL3.GL_DEPTH_TEST);
+                gl.glDepthMask(true);
+                gl.glDepthFunc(GL3.GL_LEQUAL);
+                gl.glDepthRange(0.0, 1.0);
+            });
+            return bundle;
+        };
+        return new LoadingPhase(supplier);
+    }
+
     @Override
     protected GameState nextState() {
-        return TransitionState.transitionWithTriggers(new MainState(shaderProgram, meshContext, meshes));
+        return TransitionState.transitionWithTriggers(new MainState(shaderProgram, meshContext, models));
     }
 }

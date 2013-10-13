@@ -22,6 +22,7 @@ public class ScreenClearInstruction implements JOGLInstruction<GL3> {
     @Override
     public void render(GL3 gl) {
         gl.glClearColor(red, blue, green, transparency);
-        gl.glClear(GL3.GL_COLOR_BUFFER_BIT);
+        gl.glClearDepth(1.0f);
+        gl.glClear(GL3.GL_COLOR_BUFFER_BIT | GL3.GL_DEPTH_BUFFER_BIT);
     }
 }

@@ -2,8 +2,6 @@ package game.instructions;
 
 import joglengine.output.JOGLInstruction;
 import joglengine.output.buffer.*;
-import joglengine.util.math.Matrix4f;
-import joglengine.util.math.Transformation;
 
 import javax.media.opengl.GL3;
 import java.util.Arrays;
@@ -25,11 +23,11 @@ public class MeshBuilder implements JOGLInstruction<GL3> {
         Arrays.asList(attributes).forEach(attribute -> vaoInst.withVertexAttribute(attribute));
     }
 
-    public Mesh createMesh(float[] verts, short[] inds, Transformation trans) {
+    public Mesh createMesh(float[] verts, short[] inds) {
         int originalLength = indices.length;
         addIndices(inds);
         addVertices(verts);
-        return new Mesh(originalLength, inds.length, trans);
+        return new Mesh(originalLength, inds.length);
     }
 
     private void addVertices(float[] verts) {

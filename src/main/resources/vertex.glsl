@@ -2,8 +2,6 @@
 in vec4 position;
 in vec4 color;
 
-uniform vec3 offset;
-
 out vec4 inColor;
 
 uniform mat4 modelToCamera;

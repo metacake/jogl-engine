@@ -8,12 +8,12 @@ import java.util.List;
 
 public class RenderMesh implements JOGLInstruction<GL3> {
     MeshContext context;
-    List<Mesh> meshes;
+    List<Model> models;
     ShaderProgram shader;
 
-    public RenderMesh(MeshContext context, List<Mesh> meshes, ShaderProgram shader) {
+    public RenderMesh(MeshContext context, List<Model> models, ShaderProgram shader) {
         this.context = context;
-        this.meshes = meshes;
+        this.models = models;
         this.shader = shader;
     }
 
@@ -22,9 +22,8 @@ public class RenderMesh implements JOGLInstruction<GL3> {
         shader.useProgram(gl);
 
         context.render(gl);
-        meshes.forEach(mesh -> {
-            shader.uniformMat4(gl, "modelToCamera", mesh.getMatrix());
-            mesh.render(gl);
+        models.forEach(model -> {
+            model.render(gl, shader);
         });
 
         shader.disuseProgram(gl);
