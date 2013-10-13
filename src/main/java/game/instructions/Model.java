@@ -16,7 +16,7 @@ public class Model {
     }
 
     public void render(GL3 gl, ShaderProgram shader) {
-        shader.uniformMat4(gl, "modelToCamera", transformation.getRawMatrix());
+        shader.uniformMat4(gl, "modelToWorld", transformation.getRawMatrix());
         mesh.render(gl);
     }
 

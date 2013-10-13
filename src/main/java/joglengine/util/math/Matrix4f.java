@@ -1,5 +1,7 @@
 package joglengine.util.math;
 
+import org.slf4j.Logger;
+
 import java.util.Arrays;
 
 /**
@@ -66,5 +68,16 @@ public class Matrix4f {
             builder.append("]\n");
         }
         return builder.toString();
+    }
+    // TODO: Fucking Delete this later.
+    public void logMatrix(Logger logger) {
+        for(int i = 0; i < SIZE; i++) {
+            StringBuilder builder = new StringBuilder("[");
+            for(int j = 0; j < SIZE; j++) {
+                builder.append(this.get(j, i)).append(" ");
+            }
+            builder.append("]");
+            logger.info(builder.toString());
+        }
     }
 }

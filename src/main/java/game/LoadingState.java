@@ -17,6 +17,9 @@ import joglengine.state.LoadingPhase;
 import joglengine.state.PhaseLoadingState;
 import joglengine.util.math.MatrixUtil;
 import joglengine.util.math.Transformation;
+import joglengine.util.math.Vector3f;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.media.opengl.GL3;
 import java.io.IOException;
@@ -29,6 +32,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class LoadingState extends PhaseLoadingState {
+    private static final Logger logger = LoggerFactory.getLogger(LoadingState.class);
     public static final float[] CUBE = {
             +1.0f, +1.0f, +1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f,
             -1.0f, -1.0f, +1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
@@ -76,12 +80,13 @@ public class LoadingState extends PhaseLoadingState {
         this.addLoadingPhase(phase1());
         this.addLoadingPhase(phase2());
         this.addLoadingPhase(phase3());
-        transformation.translate(0, 0, -25);
-        transformation.scale(2, 2, 2);
+        transformation.translate(0, 0, -15);
+        transformation.getRawMatrix().logMatrix(logger);
     }
 
     private LoadingPhase phase0() {
         Supplier<InspectingRenderingInstructionBundle> supplier = () -> {
+            logger.info("Phase 0");
             InspectingRenderingInstructionBundle bundle = new InspectingRenderingInstructionBundle();
             Path vPath = Paths.get("src", "main", "resources", "vertex.glsl");
             Path fPath = Paths.get("src", "main", "resources", "fragment.glsl");
@@ -100,6 +105,7 @@ public class LoadingState extends PhaseLoadingState {
 
     private LoadingPhase phase1() {
         Supplier<InspectingRenderingInstructionBundle> supplier = () -> {
+            logger.info("Phase 1");
             InspectingRenderingInstructionBundle bundle = new InspectingRenderingInstructionBundle();
             MeshBuilder builder = MeshBuilder.create(
                     new VertexAttribute(shaderProgram.getAttributeLocation("position"), 4, 0),
@@ -115,6 +121,7 @@ public class LoadingState extends PhaseLoadingState {
 
     private LoadingPhase phase2() {
         Supplier<InspectingRenderingInstructionBundle> supplier = () -> {
+            logger.info("Phase 2");
             InspectingRenderingInstructionBundle bundle = new InspectingRenderingInstructionBundle();
             bundle.add(JOGLDevice.NAME, (JOGLInstruction<GL3>) (GL3 gl) -> {
                 gl.glEnable(GL3.GL_CULL_FACE);
