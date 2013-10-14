@@ -1,7 +1,5 @@
 package joglengine.output;
 
-import io.metacake.core.output.RenderingInstruction;
-
 import javax.media.opengl.GL3;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
@@ -21,10 +19,11 @@ public class JOGLEventListener implements GLEventListener {
     public void dispose(GLAutoDrawable drawable) {}
 
     @Override
+    @SuppressWarnings({"unchecked"})
     public void display(GLAutoDrawable drawable) {
         GL3 gl = drawable.getGL().getGL3();
         state.getState().forEach(instruction -> instruction.render(gl));
-        state.setState(Collections.<RenderingInstruction>emptyList());
+        state.setState(Collections.emptyList());
     }
 
     @Override
