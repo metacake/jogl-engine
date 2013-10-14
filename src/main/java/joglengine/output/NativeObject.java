@@ -18,7 +18,4 @@ public abstract class NativeObject {
     public boolean isBound() {
         return handle >= 0;
     }
-
-    // TODO: This will change to be abstract soon
-    public void dispose() {}
 }
