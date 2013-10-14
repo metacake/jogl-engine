@@ -1,6 +1,7 @@
 Things to do for Alpha 1:
 ;---------------------------------------------------------------------------------------------------------;
-- Camera
+- Separate Game Logic And Engine Logic. We are starting to conflate the two in this project. Maybe a separate project is needed?
+- Camera [done]
 - Textures
 - Wrapper to separate Meshes and transformation [done]
 - Model Loader

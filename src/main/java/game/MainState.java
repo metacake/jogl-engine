@@ -1,9 +1,6 @@
 package game;
 
-import game.instructions.MeshContext;
-import game.instructions.Model;
-import game.instructions.RenderMesh;
-import game.instructions.ScreenClearInstruction;
+import game.instructions.*;
 import io.metacake.core.output.RenderingInstructionBundle;
 import io.metacake.core.process.state.GameState;
 import io.metacake.core.process.state.UserState;
@@ -23,11 +20,13 @@ public class MainState extends UserState {
     private ShaderProgram shader;
     private MeshContext meshContext;
     private List<Model> models;
+    private Camera camera;
 
     public MainState(ShaderProgram shader, MeshContext meshContext, List<Model> models) {
         this.shader = shader;
         this.meshContext = meshContext;
         this.models = models;
+        camera = new Camera();
     }
 
     @Override
@@ -43,7 +42,7 @@ public class MainState extends UserState {
     public RenderingInstructionBundle renderingInstructions() {
         RenderingInstructionBundle bundle = new RenderingInstructionBundle();
         bundle.add(JOGLDevice.NAME, clearInstruction);
-        bundle.add(JOGLDevice.NAME, new RenderMesh(meshContext, models, shader));
+        bundle.add(JOGLDevice.NAME, new RenderMesh(meshContext, models, camera, shader));
         return bundle;
     }
 }

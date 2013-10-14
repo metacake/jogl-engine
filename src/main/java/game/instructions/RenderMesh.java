@@ -10,13 +10,13 @@ public class RenderMesh implements JOGLInstruction<GL3> {
     MeshContext context;
     List<Model> models;
     ShaderProgram shader;
-    VulcanCamera camera = new VulcanCamera();
+    Camera camera;
 
-    public RenderMesh(MeshContext context, List<Model> models, ShaderProgram shader) {
+    public RenderMesh(MeshContext context, List<Model> models, Camera camera, ShaderProgram shader) {
         this.context = context;
         this.models = models;
         this.shader = shader;
-        camera.strafeRight(-3);
+        this.camera = camera;
     }
 
     @Override

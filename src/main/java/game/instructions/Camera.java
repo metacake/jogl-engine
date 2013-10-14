@@ -3,26 +3,84 @@ package game.instructions;
 import joglengine.util.math.Matrix4f;
 import joglengine.util.math.Vector3f;
 
-
 public class Camera {
 
-    // (phi, theta, radius) phi and theta in degrees. Note: Theta is on [-90, 90] not [0, 180]
-    private Vector3f sphereCamPos = new Vector3f(0, 0, 1);
-    private final Vector3f camTarget = new Vector3f(0, 0, 1);
+    private Vector3f position, view, right, up;
+    private float xRotation, yRotation, zRotation;
 
-    public Matrix4f cameraMatrix() {
-        return calculateViewMatrix(getCameraPosition(camTarget), camTarget, new Vector3f(0, 1, 0));
+    /**
+     * Instantiates a camera at the origin of the world space.
+     * The camera is pointing at (0, 0, -1), which is to say in the negative direction on the Z-Axis.
+     */
+    public Camera() {
+        position = new Vector3f();
+        view = new Vector3f(0, 0, -1.0f);
+        right = new Vector3f(1.0f, 0, 0);
+        up = new Vector3f(0, 1.0f, 0);
+        xRotation = 0;
+        yRotation = 0;
+        zRotation = 0;
     }
 
-    private Matrix4f calculateViewMatrix(Vector3f position, Vector3f look, Vector3f up) {
-        Vector3f lookDirection = look.subtract(position).normalize();
-        Vector3f rightDirection = look.crossProduct(up.normalize()).normalize();
-        Vector3f perpUpDirection = rightDirection.crossProduct(lookDirection);
+    public void move(Vector3f v) {
+        position = position.add(v);
+    }
+
+    public void moveForward(float distance) {
+        this.move(view.multiply(distance));
+    }
+
+    public void strafeRight(float distance) {
+        this.move(right.multiply(distance));
+    }
+
+    public void moveUp(float distance) {
+        this.move(up.multiply(distance));
+    }
+
+    /**
+     * @param angle An angle in degrees
+     */
+    public void rotateX(float angle) {
+        xRotation += angle;
+
+        Vector3f u = up.multiply((float) Math.sin(Math.toRadians(angle)));
+        view = view.multiply((float) Math.cos(Math.toRadians(angle))).add(u).normalize();
+
+        up = view.crossProduct(right).negate();
+    }
+
+    public void rotateY(float angle) {
+        yRotation += angle;
+
+        Vector3f u = right.multiply((float) Math.sin(Math.toRadians(angle)));
+        view = view.multiply((float) Math.cos(Math.toRadians(angle))).subtract(u).normalize();
+
+        right = view.crossProduct(up);
+    }
+
+    public void rotateZ(float angle) {
+        zRotation += angle;
+
+        Vector3f u = up.multiply((float) Math.sin(Math.toRadians(angle)));
+        right = right.multiply((float) Math.cos(Math.toRadians(angle))).add(u).normalize();
+
+        up = view.crossProduct(right).negate();
+    }
+
+    /**
+     * @return Returns a matrix that represents where the camera is and what is looking at.
+     */
+    public Matrix4f lookAt() {
+        Vector3f f = view.subtract(position).normalize();
+        Vector3f uNorm = up.normalize();
+        Vector3f s = f.crossProduct(uNorm);
+        Vector3f u = s.crossProduct(f);
 
         Matrix4f rotation = Matrix4f.identity();
-        fillColumnWithVector(rotation, rightDirection, 0);
-        fillColumnWithVector(rotation, perpUpDirection, 1);
-        fillColumnWithVector(rotation, lookDirection.negate(), 2);
+        fillColumnWithVector(rotation, s, 0);
+        fillColumnWithVector(rotation, u, 1);
+        fillColumnWithVector(rotation, f.negate(), 2);
 
         Matrix4f translation = Matrix4f.identity();
         fillColumnWithVector(translation, position.negate(), 3);
@@ -36,25 +94,19 @@ public class Camera {
         mat.set(column, 2, v.z());
     }
 
-    private Vector3f getCameraPosition(Vector3f target) {
-        float sinTheta = (float) Math.sin(theta());
-        float cosTheta = (float) Math.cos(theta());
-        float sinPhi = (float) Math.sin(phi());
-        float cosPhi = (float) Math.cos(phi());
-        Vector3f dirToCamera = new Vector3f(sinTheta * cosPhi, cosTheta, sinTheta * sinPhi);
-
-        return dirToCamera.multiply(radius()).add(target);
+    public Vector3f getPosition() {
+        return position;
     }
 
-    private float phi() {
-        return (float) Math.toRadians(sphereCamPos.x());
+    public float getZRotation() {
+        return zRotation;
     }
 
-    private float theta() {
-        return (float) Math.toRadians(sphereCamPos.y() + 90.0f);
+    public float getXRotation() {
+        return xRotation;
     }
 
-    private float radius() {
-        return sphereCamPos.z();
+    public float getYRotation() {
+        return yRotation;
     }
 }

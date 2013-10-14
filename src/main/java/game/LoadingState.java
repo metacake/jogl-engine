@@ -17,7 +17,6 @@ import joglengine.state.LoadingPhase;
 import joglengine.state.PhaseLoadingState;
 import joglengine.util.math.MatrixUtil;
 import joglengine.util.math.Transformation;
-import joglengine.util.math.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
