@@ -13,5 +13,9 @@ public abstract class Shader extends NativeObject {
         return source;
     }
 
+    protected void setHandle(int handle) {
+        super.setHandle(handle);
+    }
+
     public abstract int getShaderType();
 }

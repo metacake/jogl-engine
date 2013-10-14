@@ -40,6 +40,10 @@ public class ShaderProgram extends NativeObject {
         return attributes.get(name);
     }
 
+    protected void setHandle(int handle) {
+        super.setHandle(handle);
+    }
+
     void addAttribute(String name, Integer location) {
         attributes.put(name, location);
     }

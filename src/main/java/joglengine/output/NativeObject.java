@@ -11,7 +11,7 @@ public abstract class NativeObject {
         return handle;
     }
 
-    public void setHandle(int handle) {
+    protected void setHandle(int handle) {
         this.handle = handle;
     }
 

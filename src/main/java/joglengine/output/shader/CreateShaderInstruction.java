@@ -29,7 +29,7 @@ public class CreateShaderInstruction implements JOGLInstruction<GL3> {
 
     /* Builder Methods */
 
-    public CreateShaderInstruction with(Shader...shaders) {
+    public CreateShaderInstruction with(Shader... shaders) {
         this.shaders.addAll(Arrays.asList(shaders));
         return this;
     }
@@ -64,7 +64,7 @@ public class CreateShaderInstruction implements JOGLInstruction<GL3> {
 
     private void linkPrograms(GL3 gl, int handle) {
         gl.glLinkProgram(handle);
-        if(!isLinked(gl, handle)) {
+        if (!isLinked(gl, handle)) {
             printLinkerError(gl, handle);
         }
     }
@@ -91,7 +91,7 @@ public class CreateShaderInstruction implements JOGLInstruction<GL3> {
         IntBuffer countBuffer = IntBuffer.allocate(1);
         gl.glGetProgramiv(handle, GL3.GL_ACTIVE_UNIFORMS, countBuffer);
         int limit = countBuffer.get();
-        for(int i = 0; i < limit; i++) {
+        for (int i = 0; i < limit; i++) {
             IntBuffer length = IntBuffer.allocate(1);
             ByteBuffer buffer = ByteBuffer.allocate(100);
             gl.glGetActiveUniformName(handle, i, 100, length, buffer);
@@ -106,7 +106,7 @@ public class CreateShaderInstruction implements JOGLInstruction<GL3> {
         IntBuffer countBuffer = IntBuffer.allocate(1);
         gl.glGetProgramiv(handle, GL3.GL_ACTIVE_ATTRIBUTES, countBuffer);
         int limit = countBuffer.get();
-        for(int i = 0; i < limit; i++) {
+        for (int i = 0; i < limit; i++) {
             IntBuffer length = IntBuffer.allocate(1);
             ByteBuffer buffer = ByteBuffer.allocate(100);
             gl.glGetActiveAttrib(handle, i, 100, length, IntBuffer.allocate(1), IntBuffer.allocate(1), buffer);
@@ -118,12 +118,12 @@ public class CreateShaderInstruction implements JOGLInstruction<GL3> {
     }
 
     private void compile(GL3 gl, Shader shader) {
-            int handle = gl.glCreateShader(shader.getShaderType());
-            gl.glShaderSource(handle, 1, new String[] {shader.getSource()}, null, 0);
-            gl.glCompileShader(handle);
-            if(!isCompiled(gl, handle)) {
-                printCompileErrorLog(gl, handle);
-            }
+        int handle = gl.glCreateShader(shader.getShaderType());
+        gl.glShaderSource(handle, 1, new String[]{shader.getSource()}, null, 0);
+        gl.glCompileShader(handle);
+        if (!isCompiled(gl, handle)) {
+            printCompileErrorLog(gl, handle);
+        }
         shader.setHandle(handle);
     }
 

@@ -51,4 +51,8 @@ public class VertexAttributeObject extends NativeObject {
     public void unbind(GL3 gl) {
         gl.glBindVertexArray(0);
     }
+
+    protected void setHandle(int handle) {
+        super.setHandle(handle);
+    }
 }

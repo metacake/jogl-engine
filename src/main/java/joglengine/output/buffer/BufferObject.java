@@ -22,4 +22,8 @@ public class BufferObject extends NativeObject {
     public void unbind(GL3 gl) {
         gl.glBindBuffer(target, 0);
     }
+
+    protected void setHandle(int handle) {
+        super.setHandle(handle);
+    }
 }
