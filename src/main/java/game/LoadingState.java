@@ -1,10 +1,7 @@
 package game;
 
 import com.jogamp.common.nio.Buffers;
-import game.instructions.Mesh;
-import game.instructions.MeshBuilder;
-import game.instructions.MeshContext;
-import game.instructions.Model;
+import game.instructions.*;
 import io.metacake.core.output.InspectingRenderingInstructionBundle;
 import io.metacake.core.process.state.GameState;
 import io.metacake.core.process.state.TransitionState;
@@ -15,7 +12,7 @@ import joglengine.output.shader.CreateShaderInstruction;
 import joglengine.output.shader.ShaderProgram;
 import joglengine.state.LoadingPhase;
 import joglengine.state.PhaseLoadingState;
-import joglengine.util.math.MatrixUtil;
+import game.instructions.CameraUtil;
 import joglengine.util.math.Transformation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,7 +91,7 @@ public class LoadingState extends PhaseLoadingState {
             bundle.add(JOGLDevice.NAME, inst);
             bundle.add(JOGLDevice.NAME, (JOGLInstruction<GL3>) (GL3 gl) -> {
                 shaderProgram.useProgram(gl);
-                shaderProgram.uniformMat4(gl, "cameraToClip", MatrixUtil.perspective(45.0f, 800.0f / 600.0f, 1.0f, 100.0f));
+                shaderProgram.uniformMat4(gl, "cameraToClip", CameraUtil.perspective(45.0f, 800.0f / 600.0f, 1.0f, 100.0f));
                 shaderProgram.disuseProgram(gl);
             });
             return bundle;

@@ -1,6 +1,8 @@
-package joglengine.util.math;
+package game.instructions;
 
-public class MatrixUtil {
+import joglengine.util.math.Matrix4f;
+
+public class CameraUtil {
 
     public static Matrix4f perspective(float fov, float aspect, float zNear, float zFar) {
         float scale = (float) Math.tan(Math.toRadians(fov / 2)) * zNear;
