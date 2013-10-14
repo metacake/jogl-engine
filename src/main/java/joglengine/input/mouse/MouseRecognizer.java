@@ -17,7 +17,7 @@ public abstract class MouseRecognizer implements ActionRecognizer {
         this.onPress(e);
     }
 
-    final void buttenRelease(MouseEvent e) {
+    final void buttonRelease(MouseEvent e) {
         setCoordinates(e);
         this.onRelease(e);
     }

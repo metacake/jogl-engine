@@ -26,7 +26,7 @@ public class MouseTrigger implements ActionTrigger<Integer> {
     }
 
     public void buttonRelease(MouseEvent e) {
-        recognizers.forEach(recognizer -> recognizer.buttenRelease(e));
+        recognizers.forEach(recognizer -> recognizer.buttonRelease(e));
     }
 
     public void mouseMotion(MouseEvent e) {
