@@ -77,12 +77,10 @@ public class LoadingState extends PhaseLoadingState {
         this.addLoadingPhase(phase2());
         this.addLoadingPhase(phase3());
         transformation.translate(0, 0, -15);
-        transformation.getRawMatrix().logMatrix(logger);
     }
 
     private LoadingPhase phase0() {
         Supplier<InspectingRenderingInstructionBundle> supplier = () -> {
-            logger.info("Phase 0");
             InspectingRenderingInstructionBundle bundle = new InspectingRenderingInstructionBundle();
             Path vPath = Paths.get("src", "main", "resources", "vertex.glsl");
             Path fPath = Paths.get("src", "main", "resources", "fragment.glsl");
@@ -101,7 +99,6 @@ public class LoadingState extends PhaseLoadingState {
 
     private LoadingPhase phase1() {
         Supplier<InspectingRenderingInstructionBundle> supplier = () -> {
-            logger.info("Phase 1");
             InspectingRenderingInstructionBundle bundle = new InspectingRenderingInstructionBundle();
             MeshBuilder builder = MeshBuilder.create(
                     new VertexAttribute(shaderProgram.getAttributeLocation("position"), 4, 0),
@@ -117,7 +114,6 @@ public class LoadingState extends PhaseLoadingState {
 
     private LoadingPhase phase2() {
         Supplier<InspectingRenderingInstructionBundle> supplier = () -> {
-            logger.info("Phase 2");
             InspectingRenderingInstructionBundle bundle = new InspectingRenderingInstructionBundle();
             bundle.add(JOGLDevice.NAME, (JOGLInstruction<GL3>) (GL3 gl) -> {
                 gl.glEnable(GL3.GL_CULL_FACE);

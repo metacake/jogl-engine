@@ -25,9 +25,7 @@ public class RenderMesh implements JOGLInstruction<GL3> {
         shader.uniformMat4(gl, "worldToCamera", camera.lookAt());
 
         context.render(gl);
-        models.forEach(model -> {
-            model.render(gl, shader);
-        });
+        models.forEach(model -> model.render(gl, shader));
 
         shader.disuseProgram(gl);
     }
