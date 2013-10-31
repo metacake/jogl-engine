@@ -39,7 +39,7 @@ public class Matrix4f {
                 }
             }
         }
-        return mat;
+        return result;
     }
 
     public Matrix4f transpose() {

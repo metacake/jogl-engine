@@ -72,7 +72,8 @@ public class Camera {
      * @return Returns a matrix that represents where the camera is and what is looking at.
      */
     public Matrix4f lookAt() {
-        Vector3f f = view.subtract(position).normalize();
+        Vector3f center = position.add(view);
+        Vector3f f = center.subtract(position).normalize();
         Vector3f uNorm = up.normalize();
         Vector3f s = f.crossProduct(uNorm);
         Vector3f u = s.crossProduct(f);

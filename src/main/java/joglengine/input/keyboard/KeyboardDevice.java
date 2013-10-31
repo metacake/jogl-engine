@@ -7,12 +7,15 @@ import io.metacake.core.input.ActionTrigger;
 import io.metacake.core.input.InputDeviceName;
 import io.metacake.core.input.system.InputDevice;
 import joglengine.window.JOGLWindow;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
 public class KeyboardDevice implements InputDevice, KeyListener {
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
     public static final InputDeviceName NAME = new InputDeviceName();
     private List<KeyTrigger> triggers = new ArrayList<>();
 
@@ -45,6 +48,7 @@ public class KeyboardDevice implements InputDevice, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent keyEvent) {
+        logger.debug("Pressed: {}", keyEvent);
         handleKey(keyEvent, (k) -> k.keyPressed(keyEvent));
     }
 
@@ -54,8 +58,9 @@ public class KeyboardDevice implements InputDevice, KeyListener {
     }
 
     private void handleKey(KeyEvent keyEvent, Consumer<KeyTrigger> consumer) {
+        logger.debug("Pressed: {}", keyEvent);
         triggers.forEach(trigger -> {
-            if(trigger.getCodes().contains(keyEvent.getKeyCode())) {
+            if(trigger.getCodes().contains((int) keyEvent.getKeyCode())) {
                 consumer.accept(trigger);
             }
         });

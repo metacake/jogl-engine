@@ -12,7 +12,7 @@ public class VertexAttributeObject extends NativeObject {
     private List<VertexAttribute> attributes;
 
     public VertexAttributeObject() {
-        this(new ArrayList<VertexAttribute>());
+        this(new ArrayList<>());
     }
 
     public VertexAttributeObject(List<VertexAttribute> attributes) {
@@ -24,24 +24,18 @@ public class VertexAttributeObject extends NativeObject {
     }
 
     public int stride() {
-        int result = 0;
-        for(VertexAttribute attribute : attributes) {
-            result = result + attribute.count;
-        }
-        return result;
+        return attributes.stream().reduce(0, ((accumulate, attribute) -> accumulate + attribute.count), Integer::sum);
     }
+
 
     public void enable(GL3 gl) {
         int stride = stride();
-        for(VertexAttribute attribute : attributes) {
-            attribute.enableAttribute(gl, stride * Buffers.SIZEOF_FLOAT);
-        }
+        // TODO: This is wrong. It will not always be a float, although most often it will be.
+        attributes.forEach(attribute -> attribute.enableAttribute(gl, stride * Buffers.SIZEOF_FLOAT));
     }
 
     public void disable(GL3 gl) {
-        for(VertexAttribute attribute : attributes) {
-            attribute.disableAttribute(gl);
-        }
+        attributes.forEach(attribute -> attribute.disableAttribute(gl));
     }
 
     public void bind(GL3 gl) {

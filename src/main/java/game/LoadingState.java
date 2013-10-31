@@ -1,10 +1,14 @@
 package game;
 
 import com.jogamp.common.nio.Buffers;
+import com.jogamp.newt.event.KeyEvent;
 import game.instructions.*;
 import io.metacake.core.output.InspectingRenderingInstructionBundle;
 import io.metacake.core.process.state.GameState;
 import io.metacake.core.process.state.TransitionState;
+import joglengine.input.keyboard.KeyHeldRecognizer;
+import joglengine.input.keyboard.KeyRecognizer;
+import joglengine.input.keyboard.KeyTrigger;
 import joglengine.output.JOGLDevice;
 import joglengine.output.JOGLInstruction;
 import joglengine.output.buffer.VertexAttribute;
@@ -12,7 +16,6 @@ import joglengine.output.shader.CreateShaderInstruction;
 import joglengine.output.shader.ShaderProgram;
 import joglengine.state.LoadingPhase;
 import joglengine.state.PhaseLoadingState;
-import game.instructions.CameraUtil;
 import joglengine.util.math.Transformation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,9 +60,7 @@ public class LoadingState extends PhaseLoadingState {
     static String getSource(Path filePath) {
         StringBuilder builder = new StringBuilder();
         try {
-            for (String line : Files.readAllLines(filePath, Charset.defaultCharset())) {
-                builder.append(line).append("\n");
-            }
+            Files.readAllLines(filePath, Charset.defaultCharset()).forEach(line -> builder.append(line).append("\n"));
             return builder.toString();
         } catch (IOException io) {
             throw new RuntimeException(io);
@@ -141,6 +142,8 @@ public class LoadingState extends PhaseLoadingState {
 
     @Override
     protected GameState nextState() {
-        return TransitionState.transitionWithTriggers(new MainState(shaderProgram, meshContext, models));
+        KeyRecognizer recognizer = new KeyHeldRecognizer();
+        KeyTrigger trigger = new KeyTrigger((int) KeyEvent.VK_D).bindRecognizer(recognizer);
+        return TransitionState.transitionWithTriggers(new MainState(shaderProgram, meshContext, models, recognizer), trigger);
     }
 }

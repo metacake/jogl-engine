@@ -55,4 +55,8 @@ public class Vector3f {
         float nz = (this.x() * v.y()) - (this.y() * v.x());
         return new Vector3f(nx, ny, nz);
     }
+
+    public String toString() {
+        return "[" + this.x() + " " + this.y() + " " + this.z() + "]";
+    }
 }
