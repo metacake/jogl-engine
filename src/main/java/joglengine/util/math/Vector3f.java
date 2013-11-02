@@ -56,6 +56,17 @@ public class Vector3f {
         return new Vector3f(nx, ny, nz);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Vector3f) {
+            Vector3f v = (Vector3f) o;
+            return v.x() == this.x() && v.y() == this.y() && v.z() == this.z();
+        } else {
+            return false;
+        }
+    }
+
+    @Override
     public String toString() {
         return "[" + this.x() + " " + this.y() + " " + this.z() + "]";
     }
