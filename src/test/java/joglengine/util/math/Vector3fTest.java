@@ -7,11 +7,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsSame.sameInstance;
+import static org.hamcrest.number.IsCloseTo.closeTo;
 
 public class Vector3fTest {
 
     private Vector3f zero, one, two, three;
     private final int ARBITRARY_SCALAR_VALUE = 3;
+    private final double EPSILON = 0.0005;
 
     @Before
     public void setup() {
@@ -69,5 +71,10 @@ public class Vector3fTest {
     @Test
     public void multiplicativeIdentity() {
         assertThat(three.multiply(1), equalTo(three));
+    }
+
+    @Test
+    public void normalized() {
+        assertThat((double) one.normalize().magnitude(), closeTo(1.0, EPSILON));
     }
 }
