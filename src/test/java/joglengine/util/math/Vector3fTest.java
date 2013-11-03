@@ -7,7 +7,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsSame.sameInstance;
-import static org.hamcrest.number.IsCloseTo.closeTo;
 
 public class Vector3fTest {
 
@@ -25,7 +24,8 @@ public class Vector3fTest {
 
     @Test
     public void immutable() {
-        assertThat(zero.add(new Vector3f()), not(sameInstance(zero)));
+        assertThat(zero.add(two), not(sameInstance(zero)));
+        assertThat(zero.add(two), not(sameInstance(two)));
         assertThat(zero.negate(), not(sameInstance(zero)));
         assertThat(zero.multiply(ARBITRARY_SCALAR_VALUE), not(sameInstance(zero)));
     }
@@ -71,10 +71,5 @@ public class Vector3fTest {
     @Test
     public void multiplicativeIdentity() {
         assertThat(three.multiply(1), equalTo(three));
-    }
-
-    @Test
-    public void normalized() {
-        assertThat((double) one.normalize().magnitude(), closeTo(1.0, EPSILON));
     }
 }

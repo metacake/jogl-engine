@@ -8,6 +8,9 @@ import java.util.Arrays;
 public class Matrix4f {
     private static final int SIZE = 4;
 
+    /**
+     * @return Produces a 4x4 identity matrix.
+     */
     public static Matrix4f identity() {
         Matrix4f matrix = new Matrix4f();
         for (int i = 0; i < SIZE; i++) {

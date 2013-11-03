@@ -1,6 +1,11 @@
 package joglengine.util.math;
 
 public class Vector3f {
+
+    public static Vector3f of(float x, float y, float z) {
+        return new Vector3f(x, y, z);
+    }
+
     private float x, y, z;
 
     public Vector3f() {
