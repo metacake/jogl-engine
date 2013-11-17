@@ -6,8 +6,8 @@ import game.instructions.*;
 import io.metacake.core.output.InspectingRenderingInstructionBundle;
 import io.metacake.core.process.state.GameState;
 import io.metacake.core.process.state.TransitionState;
-import joglengine.input.keyboard.KeyHeldRecognizer;
-import joglengine.input.keyboard.KeyRecognizer;
+import joglengine.process.KeyHeldRecognizer;
+import joglengine.process.KeyRecognizer;
 import joglengine.input.keyboard.KeyTrigger;
 import joglengine.output.JOGLDevice;
 import joglengine.output.JOGLInstruction;
@@ -71,6 +71,7 @@ public class LoadingState extends PhaseLoadingState {
     MeshContext meshContext;
     List<Model> models = new ArrayList<>();
     Transformation transformation = new Transformation();
+    Transformation transformation2 = new Transformation();
 
     public LoadingState() {
         this.addLoadingPhase(phase0());
@@ -78,6 +79,7 @@ public class LoadingState extends PhaseLoadingState {
         this.addLoadingPhase(phase2());
         this.addLoadingPhase(phase3());
         transformation.translate(0, 0, -15);
+        transformation2.translate(-5, -5, -15);
     }
 
     private LoadingPhase phase0() {
@@ -108,6 +110,7 @@ public class LoadingState extends PhaseLoadingState {
             meshContext = builder.getMeshContext();
             bundle.add(JOGLDevice.NAME, builder);
             models.add(new Model(mesh, transformation));
+            models.add(new Model(mesh, transformation2));
             return bundle;
         };
         return new LoadingPhase(supplier);

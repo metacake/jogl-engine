@@ -50,4 +50,41 @@ class Vector3fSpec extends Specification {
         vSum = v.add(u.add(w))
         wSum = w.add(v.add(u))
     }
+
+    def "Additive Inverse Property"() {
+        expect:
+        expect sum, equalTo(zero)
+
+        where:
+        v << nRandomVectors(10)
+        sum = v.add(v.negate())
+    }
+
+    def "Distributive property of multiplication"() {
+        expect:
+        expect v.add(u).multiply(s), equalTo(v.multiply(s).add(u.multiply(s)))
+
+        where:
+        v << nRandomVectors(10)
+        u << nRandomVectors(10)
+        s = new Random().nextFloat()
+    }
+
+    def "Multiplying by scalars is associative"() {
+        expect:
+        expect v.multiply(s1).multiply(s2), equalTo(v.multiply((float) s1 * s2))
+
+        where:
+        v << nRandomVectors(10)
+        s1 = new Random().nextFloat()
+        s2 = new Random().nextFloat()
+    }
+
+    def "Multiplicative Identity"() {
+        expect:
+        expect v.multiply(1), equalTo(v)
+
+        where:
+        v << nRandomVectors(10)
+    }
 }

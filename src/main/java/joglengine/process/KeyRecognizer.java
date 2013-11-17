@@ -1,4 +1,4 @@
-package joglengine.input.keyboard;
+package joglengine.process;
 
 import com.jogamp.newt.event.KeyEvent;
 import io.metacake.core.process.ActionRecognizer;

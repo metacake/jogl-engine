@@ -6,6 +6,9 @@ public class Vector3f {
         return new Vector3f(x, y, z);
     }
 
+    // An epsilon for comparing floats.
+    private static float EPSILON = 0.000_001f;
+
     private float x, y, z;
 
     public Vector3f() {
@@ -65,10 +68,14 @@ public class Vector3f {
     public boolean equals(Object o) {
         if (o instanceof Vector3f) {
             Vector3f v = (Vector3f) o;
-            return v.x() == this.x() && v.y() == this.y() && v.z() == this.z();
+            return withinEpsilon(this.x(), v.x()) && withinEpsilon(this.y(), v.y()) && withinEpsilon(this.z(), v.z());
         } else {
             return false;
         }
+    }
+
+    private boolean withinEpsilon(float f1, float f2) {
+        return Math.abs(f1 - f2) < EPSILON;
     }
 
     @Override

@@ -7,7 +7,6 @@ import io.metacake.core.process.state.GameState;
 import io.metacake.core.process.state.UserState;
 import joglengine.output.JOGLDevice;
 import joglengine.output.shader.ShaderProgram;
-import joglengine.util.math.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,8 +37,8 @@ public class MainState extends UserState {
             int weight = recognizer.triggerWeight();
             camera.rotateY(weight/3.0f);
         }
-        angle = (angle + 0.5f) % 360;
-        models.forEach(model -> model.getTransformation().rotate(new Vector3f(1, 1, 1), angle));
+//        angle = (angle + 0.5f) % 360;
+//        models.forEach(model -> model.getTransformation().rotate(new Vector3f(1, 1, 1), angle));
         return this;
     }
 
