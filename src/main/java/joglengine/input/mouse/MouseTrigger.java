@@ -16,11 +16,6 @@ public class MouseTrigger implements ActionTrigger<Integer> {
         this.codes = Arrays.asList(codes);
     }
 
-    @Override
-    public List<Integer> getCodes() {
-        return codes;
-    }
-
     public void buttonPress(MouseEvent e) {
         recognizers.forEach(recognizer -> recognizer.buttonPress(e));
     }
@@ -42,6 +37,11 @@ public class MouseTrigger implements ActionTrigger<Integer> {
     public MouseTrigger bindRecognizer(MouseRecognizer r) {
         recognizers.add(r);
         return this;
+    }
+
+    @Override
+    public boolean isTriggeredBy(Integer event) {
+        return codes.contains(event);
     }
 
     @Override

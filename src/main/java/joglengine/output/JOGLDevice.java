@@ -9,6 +9,7 @@ import io.metacake.core.output.RenderingInstruction;
 import io.metacake.core.output.system.OutputDevice;
 import joglengine.window.JOGLWindow;
 
+import java.util.Collection;
 import java.util.List;
 
 public class JOGLDevice implements OutputDevice {
@@ -23,7 +24,7 @@ public class JOGLDevice implements OutputDevice {
     }
 
     @Override
-    public void render(List<RenderingInstruction> instructions) {
+    public void render(Collection<RenderingInstruction> instructions) {
         sync.setState(instructions);
     }
 

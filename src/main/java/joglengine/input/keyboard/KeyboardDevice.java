@@ -60,7 +60,7 @@ public class KeyboardDevice implements InputDevice, KeyListener {
     private void handleKey(KeyEvent keyEvent, Consumer<KeyTrigger> consumer) {
         logger.debug("Pressed: {}", keyEvent);
         triggers.forEach(trigger -> {
-            if(trigger.getCodes().contains((int) keyEvent.getKeyCode())) {
+            if(trigger.isTriggeredBy((int) keyEvent.getKeyCode())) {
                 consumer.accept(trigger);
             }
         });

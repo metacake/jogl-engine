@@ -40,7 +40,7 @@ public class MouseDevice extends MouseAdapter implements InputDevice {
     @Override
     public void mousePressed(MouseEvent mouseEvent) {
         for (MouseTrigger trigger : triggers) {
-            if (trigger.getCodes().contains(mouseEvent.getButton())) {
+            if (trigger.isTriggeredBy((int) mouseEvent.getButton())) {
                 trigger.buttonPress(mouseEvent);
             }
         }
@@ -49,7 +49,7 @@ public class MouseDevice extends MouseAdapter implements InputDevice {
     @Override
     public void mouseReleased(MouseEvent mouseEvent) {
         for (MouseTrigger trigger : triggers) {
-            if (trigger.getCodes().contains(mouseEvent.getButton())) {
+            if (trigger.isTriggeredBy((int) mouseEvent.getButton())) {
                 trigger.buttonRelease(mouseEvent);
             }
         }
@@ -63,7 +63,7 @@ public class MouseDevice extends MouseAdapter implements InputDevice {
     @Override
     public void mouseMoved(MouseEvent mouseEvent) {
         for (MouseTrigger trigger : triggers) {
-            if (trigger.getCodes().contains(MouseEvent.EVENT_MOUSE_MOVED)) {
+            if (trigger.isTriggeredBy((int) MouseEvent.EVENT_MOUSE_MOVED)) {
                 trigger.mouseMotion(mouseEvent);
             }
         }
