@@ -1,8 +1,10 @@
 package game;
 
 import game.instructions.*;
+import io.metacake.core.common.CustomizableMap;
 import io.metacake.core.output.RenderingInstructionBundle;
 import io.metacake.core.process.ActionRecognizer;
+import io.metacake.core.process.ActionRecognizerName;
 import io.metacake.core.process.state.GameState;
 import io.metacake.core.process.state.UserState;
 import joglengine.output.JOGLDevice;
@@ -11,8 +13,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Map;
 
 public class MainState extends UserState {
+    public static ActionRecognizerName RECOGNIZER_NAME = new ActionRecognizerName();
     private static final Logger logger = LoggerFactory.getLogger(MainState.class);
     private final ScreenClearInstruction clearInstruction = new ScreenClearInstruction();
 
@@ -21,18 +25,17 @@ public class MainState extends UserState {
     private MeshContext meshContext;
     private List<Model> models;
     private Camera camera;
-    private ActionRecognizer recognizer;
 
-    public MainState(ShaderProgram shader, MeshContext meshContext, List<Model> models, ActionRecognizer recognizer) {
+    public MainState(ShaderProgram shader, MeshContext meshContext, List<Model> models) {
         this.shader = shader;
         this.meshContext = meshContext;
         this.models = models;
         camera = new Camera();
-        this.recognizer = recognizer;
     }
 
     @Override
-    public GameState tick() {
+    public GameState tick(long time, CustomizableMap<ActionRecognizerName,ActionRecognizer> recogs) {
+        ActionRecognizer recognizer = recogs.get(RECOGNIZER_NAME);
         if (recognizer.wasTriggered()) {
             int weight = recognizer.triggerWeight();
             camera.rotateY(weight/3.0f);

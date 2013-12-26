@@ -2,6 +2,8 @@ package joglengine.process;
 
 import com.jogamp.newt.event.KeyEvent;
 import io.metacake.core.common.MilliTimer;
+import io.metacake.core.process.ActionRecognizer;
+import io.metacake.core.process.ActionRecognizerName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,6 +17,12 @@ public class KeyHeldRecognizer implements KeyRecognizer {
     private boolean isHeld, wasTriggered;
     private int savedAmount = 0;
     private final int timerFactor = 10;
+    private ActionRecognizerName name;
+
+    public KeyHeldRecognizer(ActionRecognizerName name) {
+        this.name = name;
+    }
+
 
     @Override
     public void keyPressed(KeyEvent keyEvent) {
@@ -29,6 +37,11 @@ public class KeyHeldRecognizer implements KeyRecognizer {
     public void keyReleased(KeyEvent keyEvent) {
         savedAmount += amountOfTimePassed();
         isHeld = false;
+    }
+
+    @Override
+    public ActionRecognizerName getName() {
+        return name;
     }
 
     @Override

@@ -1,6 +1,9 @@
 package joglengine.state;
 
+import io.metacake.core.common.CustomizableMap;
 import io.metacake.core.output.RenderingInstructionBundle;
+import io.metacake.core.process.ActionRecognizer;
+import io.metacake.core.process.ActionRecognizerName;
 import io.metacake.core.process.state.GameState;
 import io.metacake.core.process.state.UserState;
 
@@ -22,7 +25,7 @@ public abstract class PhaseLoadingState extends UserState {
     }
 
     @Override
-    public GameState tick() {
+    public GameState tick(long time, CustomizableMap<ActionRecognizerName,ActionRecognizer> recogs) {
         return (loadingPhases.isEmpty()) ? this.nextState() : this;
     }
 

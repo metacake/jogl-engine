@@ -19,8 +19,8 @@ public class KeyTrigger implements ActionTrigger<Integer> {
     }
 
     @Override
-    public List<Integer> getCodes() {
-        return codes;
+    public boolean isTriggeredBy(Integer event) {
+        return codes.contains(event);
     }
 
     @Override

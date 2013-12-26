@@ -19,7 +19,7 @@
         <dependency>
             <groupId>metacake</groupId>
             <artifactId>metacake</artifactId>
-            <version>a2.0.0</version>
+            <version>b1.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.jogamp.gluegen</groupId>
