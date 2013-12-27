@@ -9,18 +9,18 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-public class KeyTrigger implements ActionTrigger<Integer> {
+public class KeyTrigger implements ActionTrigger<KeyEvent> {
 
-    private List<Integer> codes;
+    private List<Short> codes;
     private List<KeyRecognizer> recognizers = new LinkedList<>();
 
-    public KeyTrigger(Integer...codes) {
+    public KeyTrigger(Short... codes) {
         this.codes = Arrays.asList(codes);
     }
 
     @Override
-    public boolean isTriggeredBy(Integer event) {
-        return codes.contains(event);
+    public boolean isTriggeredBy(KeyEvent event) {
+        return codes.stream().anyMatch(s -> s == event.getKeyCode());
     }
 
     @Override
@@ -38,7 +38,7 @@ public class KeyTrigger implements ActionTrigger<Integer> {
 
     // EFFECT: adds r to this
     // returns this
-    public KeyTrigger bindRecognizer(KeyRecognizer...rs) {
+    public KeyTrigger bindRecognizer(KeyRecognizer... rs) {
         Arrays.asList(rs).forEach(recognizers::add);
         return this;
     }
