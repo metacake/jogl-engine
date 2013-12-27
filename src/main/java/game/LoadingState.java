@@ -146,7 +146,10 @@ public class LoadingState extends PhaseLoadingState {
     @Override
     protected GameState nextState() {
         KeyRecognizer recognizer = new KeyHeldRecognizer(MainState.RECOGNIZER_NAME);
-        KeyTrigger trigger = new KeyTrigger((int) KeyEvent.VK_D).bindRecognizer(recognizer);
-        return TransitionState.withState(new MainState(shaderProgram, meshContext, models)).withTriggers(trigger).withRecognizers(recognizer).transition();
+        KeyTrigger trigger = new KeyTrigger(KeyEvent.VK_D).bindRecognizer(recognizer);
+        return TransitionState.withState(new MainState(shaderProgram, meshContext, models))
+                              .withTriggers(trigger)
+                              .withRecognizers(recognizer)
+                              .transition();
     }
 }
